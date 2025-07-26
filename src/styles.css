@@ -1,1 +1,381 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+              Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Theme System */
+:root {
+  /* Base theme variables - will be overridden by data-theme attributes */
+  --primary-color: #0db3d9;
+  --accent-color: #b00457;
+  --text-color: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --bg-color: #000000;
+  --surface-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark Theme - Street Light Effect */
+:root[data-theme="dark"] {
+  --primary-color: #0db3d9;
+  --accent-color: #b00457;
+  --text-color: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --bg-color: #000000;
+  --surface-color: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.6);
+  --glass-bg: rgba(0, 0, 0, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --street-light-glow: rgba(13, 179, 217, 0.3);
+  --street-light-color: rgba(13, 179, 217, 0.1);
+  --grid-color: rgba(13, 179, 217, 0.3);
+}
+
+/* Light Theme - Warm Street Light Effect */
+:root[data-theme="light"] {
+  --primary-color: #1c5f78;
+  --accent-color: #b00457;
+  --text-color: #2d3748;
+  --text-secondary: rgba(45, 55, 72, 0.7);
+  --bg-color: #faf5f0;
+  --surface-color: rgba(255, 255, 255, 0.3);
+  --border-color: rgba(28, 95, 120, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --glass-border: rgba(28, 95, 120, 0.2);
+  --street-light-glow: rgba(255, 193, 7, 0.3);
+  --street-light-color: rgba(255, 193, 7, 0.1);
+  --grid-color: rgba(28, 95, 120, 0.2);
+}
+
+/* Dynamic Background with Street Light Effect */
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  position: relative;
+}
+
+/* Street Light Background Effect - Actual torch/street light beams */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -2;
+  opacity: 0.4;
+  background: 
+    /* Top left street light */
+    conic-gradient(from 135deg at 10% 5%, 
+      transparent 0deg, 
+      var(--street-light-glow) 30deg, 
+      var(--street-light-color) 35deg, 
+      var(--street-light-glow) 40deg, 
+      transparent 70deg),
+    /* Top right street light */
+    conic-gradient(from 225deg at 90% 8%, 
+      transparent 0deg, 
+      var(--street-light-glow) 30deg, 
+      var(--street-light-color) 35deg, 
+      var(--street-light-glow) 40deg, 
+      transparent 70deg),
+    /* Bottom left street light */
+    conic-gradient(from 45deg at 15% 85%, 
+      transparent 0deg, 
+      var(--street-light-glow) 25deg, 
+      var(--street-light-color) 30deg, 
+      var(--street-light-glow) 35deg, 
+      transparent 60deg),
+    /* Bottom right street light */
+    conic-gradient(from 315deg at 85% 90%, 
+      transparent 0deg, 
+      var(--street-light-glow) 25deg, 
+      var(--street-light-color) 30deg, 
+      var(--street-light-glow) 35deg, 
+      transparent 60deg);
+  animation: streetLightFlicker 6s ease-in-out infinite;
+}
+
+/* Grid overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.15;
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes streetLightFlicker {
+  0% { opacity: 0.3; }
+  25% { opacity: 0.5; }
+  50% { opacity: 0.4; }
+  75% { opacity: 0.6; }
+  100% { opacity: 0.35; }
+}
+
+@keyframes gridPulse {
+  0% { 
+    opacity: 0.1;
+    background-size: 40px 40px;
+  }
+  50% { 
+    opacity: 0.2;
+    background-size: 42px 42px;
+  }
+  100% { 
+    opacity: 0.15;
+    background-size: 40px 40px;
+  }
+}
+
+/* Glassmorphism Base Classes */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 8px 32px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-intense {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 
+    0 16px 64px var(--shadow-color),
+    0 0 40px var(--street-light-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Selection Styles */
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Button Base Styles */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Link Styles */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+/* Typography Enhancement */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Utility Classes */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.street-light-glow {
+  box-shadow: 0 0 30px var(--street-light-glow);
+}
+
+.elevated {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+/* Main Content Layout */
+.main-content {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Enhanced 3D Effects */
+.transform-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) translateZ(20px);
+}
+
+/* Smooth Animations */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design Base */
+@media (max-width: 768px) {
+  body::before {
+    background: 
+      /* Mobile - fewer, smaller street lights */
+      conic-gradient(from 135deg at 5% 10%, 
+        transparent 0deg, 
+        var(--street-light-glow) 35deg, 
+        var(--street-light-color) 40deg, 
+        var(--street-light-glow) 45deg, 
+        transparent 80deg),
+      conic-gradient(from 225deg at 95% 15%, 
+        transparent 0deg, 
+        var(--street-light-glow) 35deg, 
+        var(--street-light-color) 40deg, 
+        var(--street-light-glow) 45deg, 
+        transparent 80deg);
+  }
+  
+  body::after {
+    background-size: 30px 30px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root[data-theme="dark"] {
+    --glass-bg: rgba(0, 0, 0, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.3);
+  }
+  
+  :root[data-theme="light"] {
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  body::before {
+    animation: none;
+  }
+}
