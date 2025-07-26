@@ -26,19 +26,19 @@ import { SupabaseService } from '../services/supabase';
   `,
   styleUrl: './signin.component.css'
 })
-export class SigninComponent implements OnInit  {
-    email = signal('');
+export class SigninComponent implements OnInit {
+  email = signal('');
   password = signal('');
 
   private readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
 
-  constructor() {}
+  constructor() { }
 
   async ngOnInit() {
     if (typeof window !== 'undefined') {
-      const user = await this.supabaseService.getUser();
-      if (!user.error) {
+      const user = await this.supabaseService.isSignedIn();
+      if (user) {
         this.router.navigate(['/dashboard']);
       }
     }
