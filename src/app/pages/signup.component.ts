@@ -37,8 +37,8 @@ export class SignupComponent implements OnInit {
 
     async ngOnInit() {
         if (typeof window !== 'undefined') {
-            const user = await this.supabaseService.getUser();
-            if (!user.error) {
+            const user = await this.supabaseService.isSignedIn();
+            if (user) {
                 this.router.navigate(['/dashboard']);
             }
         }

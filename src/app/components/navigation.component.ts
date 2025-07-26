@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
 import { SupabaseService } from '../services/supabase';
 import { User } from '@supabase/supabase-js';
@@ -91,15 +91,12 @@ export class NavigationComponent implements OnInit {
   protected readonly isMenuOpen = signal(false);
 
   protected readonly supabaseService = inject(SupabaseService);
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
-      this.supabaseService.getUser().then(({ data, error }) => {
-        if (error) {
-          console.error('Error fetching user:', error);
-        } else {
-          this.user = data.user;
-        }
+      this.supabaseService.user$.subscribe(user => {
+        this.user = user;
       });
     }
   }
@@ -112,9 +109,9 @@ export class NavigationComponent implements OnInit {
     this.isMenuOpen.update(open => !open);
   }
 
-  protected signOut(): void {
-    this.supabaseService.signOut().then(() => {
-      this.user = null;
-    });
+  async signOut(): Promise<void> {
+    await this.supabaseService.signOut();
+    this.user = null;
+    this.router.navigate(['/signin']);
   }
 }

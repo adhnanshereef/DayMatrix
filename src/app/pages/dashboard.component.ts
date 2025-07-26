@@ -30,12 +30,8 @@ export class DashboardComponent implements OnInit{
   private readonly supabaseService = inject(SupabaseService);
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
-      this.supabaseService.getUser().then(({ data, error }) => {
-        if (error) {
-          console.error('Error fetching user:', error);
-        } else {
-          this.user = data.user;
-        }
+      this.supabaseService.user$.subscribe(user => {
+        this.user = user;
       });
     }
   }
