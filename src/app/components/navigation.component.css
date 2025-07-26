@@ -193,6 +193,8 @@
 }
 
 .cta-button {
+  display: flex;
+  align-items: center;
   padding: 12px 24px;
   border: none;
   border-radius: 12px;
@@ -213,6 +215,12 @@
     transform: translateY(0);
   }
 }
+
+svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+  }
 
 .mobile-menu-toggle {
   display: none;

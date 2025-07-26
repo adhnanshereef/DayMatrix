@@ -1,6 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService } from '../services/theme.service';
+import { SupabaseService } from '../services/supabase';
+import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-navigation',
@@ -17,18 +19,27 @@ import { ThemeService } from '../services/theme.service';
         
         <div class="nav-menu" [class.nav-menu-open]="isMenuOpen()">
           <div class="nav-links">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+            <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
               Home
             </a>
-            <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+            @if(user) {
+            <a routerLink="/dashboard" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
               Dashboard
             </a>
-            <a routerLink="/tasks" routerLinkActive="active" class="nav-link">
+            <a routerLink="/tasks" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
               Tasks
             </a>
-            <a routerLink="/analytics" routerLinkActive="active" class="nav-link">
+            <a routerLink="/analytics" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
               Analytics
             </a>
+          }@else{
+            <a routerLink="/signin" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+              SignIn
+            </a>
+            <a routerLink="/signup" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+              SignUp
+            </a>
+          }
           </div>
           
           <div class="nav-actions">
@@ -45,9 +56,18 @@ import { ThemeService } from '../services/theme.service';
               }
             </button>
             
-            <button class="cta-button">
+            @if (!user) {
+            <button class="cta-button" (click)="toggleMobileMenu()" >
               Get Started
             </button>
+            } @else {
+            <button class="cta-button" (click)="signOut();toggleMobileMenu()" >
+              SignOut &nbsp;
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M5 12h14m-7-7 7 7-7 7"/>
+                </svg>
+            </button>
+            }
           </div>
         </div>
         
@@ -65,15 +85,36 @@ import { ThemeService } from '../services/theme.service';
   `,
   styleUrl: './navigation.component.css'
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
+  user: User | null = null;
   protected readonly themeService = inject(ThemeService);
   protected readonly isMenuOpen = signal(false);
-  
+
+  protected readonly supabaseService = inject(SupabaseService);
+
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.supabaseService.getUser().then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching user:', error);
+        } else {
+          this.user = data.user;
+        }
+      });
+    }
+  }
+
   protected toggleTheme(): void {
     this.themeService.toggleTheme();
   }
-  
+
   protected toggleMobileMenu(): void {
     this.isMenuOpen.update(open => !open);
+  }
+
+  protected signOut(): void {
+    this.supabaseService.signOut().then(() => {
+      this.user = null;
+    });
   }
 }

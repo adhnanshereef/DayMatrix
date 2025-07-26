@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { SupabaseService } from '../services/supabase';
+import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,6 +8,10 @@ import { Component } from '@angular/core';
     <div class="page-container">
       <h1>Dashboard</h1>
       <p>Dashboard content coming soon...</p>
+      @if(user){
+        <p>Welcome, {{ user.user_metadata['displayName'] }}</p>
+        <p>Your email: {{ user.email }}</p>
+      }
     </div>
   `,
   styles: [`
@@ -17,5 +23,20 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+  user: User | null = null;
+
+  
+  private readonly supabaseService = inject(SupabaseService);
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.supabaseService.getUser().then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching user:', error);
+        } else {
+          this.user = data.user;
+        }
+      });
+    }
+  }
 }
