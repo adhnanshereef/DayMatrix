@@ -159,6 +159,12 @@ body::after {
   }
 }
 
+.center{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 /* Glassmorphism Base Classes */
 .glass {
   background: var(--glass-bg);
