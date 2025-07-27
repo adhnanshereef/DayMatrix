@@ -17,7 +17,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         @for(task of tasks$ | async; track task.id) {
             @if(task.quadrant === 'important-urgent') {
               <div class="task-item" [class.completed]="task.completed">
-                <h3>{{ task.task }}</h3>
+                <div class="task-header">
+                  <h3>{{ task.task }}</h3>
+                  <div class="task-dropdown">
+                    <button class="dropdown-toggle" type="button" tabindex="0">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                    </div>
+                  </div>
+                </div>
                 @if(task.description) {
                   <p class="task-des" >{{ task.description }}</p>
                 }
@@ -38,7 +49,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         @for(task of tasks$ | async; track task.id) {
             @if(task.quadrant === 'important-not-urgent') {
               <div class="task-item" [class.completed]="task.completed">
-                <h3>{{ task.task }}</h3>
+                <div class="task-header">
+                  <h3>{{ task.task }}</h3>
+                  <div class="task-dropdown">
+                    <button class="dropdown-toggle" type="button" tabindex="0">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                    </div>
+                  </div>
+                </div>
                 @if(task.description) {
                   <p class="task-des" >{{ task.description }}</p>
                 }
@@ -59,7 +81,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         @for(task of tasks$ | async; track task.id) {
             @if(task.quadrant === 'not-important-urgent') {
               <div class="task-item" [class.completed]="task.completed">
-                <h3>{{ task.task }}</h3>
+                <div class="task-header">
+                  <h3>{{ task.task }}</h3>
+                  <div class="task-dropdown">
+                    <button class="dropdown-toggle" type="button" tabindex="0">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                    </div>
+                  </div>
+                </div>
                 @if(task.description) {
                   <p class="task-des" >{{ task.description }}</p>
                 }
@@ -80,7 +113,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         @for(task of tasks$ | async; track task.id) {
             @if(task.quadrant === 'not-important-not-urgent') {
               <div class="task-item" [class.completed]="task.completed">
-                <h3>{{ task.task }}</h3>
+                <div class="task-header">
+                  <h3>{{ task.task }}</h3>
+                  <div class="task-dropdown">
+                    <button class="dropdown-toggle" type="button" tabindex="0">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                    </button>
+                    <div class="dropdown-menu">
+                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                    </div>
+                  </div>
+                </div>
                 @if(task.description) {
                   <p class="task-des" >{{ task.description }}</p>
                 }
@@ -127,6 +171,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
       border-radius: 8px;
       box-shadow: var(--shadow-color);
     }
+
     .task-list{
       min-height: 200px;
       max-height: 45vh;
@@ -142,8 +187,9 @@ import { AsyncPipe, DatePipe } from '@angular/common';
       box-shadow: var(--shadow-color);
       margin-bottom: 15px;
       backdrop-filter: blur(5px);
+      z-index: 0;
     }
-    .task-item > h3{
+    .task-item  h3{
       font-size: 1rem;
       font-weight: 300;
       letter-spacing: 0.75px;
@@ -187,6 +233,99 @@ import { AsyncPipe, DatePipe } from '@angular/common';
       width: 23%;
       color: var(--text-primary);
     }
+    .task-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .task-dropdown {
+      position: relative;
+    }
+
+    .dropdown-toggle {
+      background: rgba(255,255,255,0.18);
+      border: none;
+      border-radius: 50%;
+      padding: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: background 0.2s;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dropdown-toggle:focus,
+    .dropdown-toggle:hover {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    }
+    .dropdown-menu {
+      z-index: 1;
+      position: absolute;
+      top: 28px;
+      right: 0;
+      min-width: 110px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      border: 1px solid rgba(28,95,120,0.18);
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 0;
+    }
+    .task-dropdown:focus-within .dropdown-menu,
+    .task-dropdown:hover .dropdown-menu {
+      display: flex;
+    }
+    .dropdown-item {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 0.95rem;
+      padding: 8px 18px;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .dropdown-item.edit {
+      color: #04b0adff;
+    }
+    .dropdown-item.delete {
+      color: var(--accent-color);
+    }
+    .dropdown-item:hover {
+      background: var(--glass-bg);
+      color: #fff;
+    }
+    @media (max-width: 768px) {
+      .dropdown-menu {
+        min-width: 90px;
+        top: 24px;
+        right: 0;
+        padding: 6px 0;
+      }
+      .dropdown-item {
+        font-size: 0.85rem;
+        padding: 7px 12px;
+      }
+    }
+    @media (max-width: 480px) {
+      .dropdown-menu {
+        min-width: 80px;
+        top: 20px;
+        right: 0;
+        padding: 4px 0;
+      }
+      .dropdown-item {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+    }
   `]
 })
 
@@ -227,6 +366,10 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
     // Any additional initialization logic can go here
+  }
+
+  deleteTask(taskId: string) {
+    this.supabaseService.deleteTask(taskId)
   }
 
   clearNewTask() {
