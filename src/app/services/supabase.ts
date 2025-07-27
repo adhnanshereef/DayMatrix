@@ -4,7 +4,7 @@ import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { SignInPayload, SignupPayload } from '../interfaces/profile';
 import { BehaviorSubject } from 'rxjs';
-import { Task } from '../interfaces/tasks';
+import { Task, TaskInput } from '../interfaces/tasks';
 
 @Injectable({
   providedIn: 'root'
@@ -91,7 +91,7 @@ export class SupabaseService {
   //   return await this.supabase.auth.resetPasswordForEmail(email);
   // }
 
-  async createTask(task: { task: string, description: string, due: Date | null, quadrant: string }) {
+  async createTask(task: TaskInput) {
     if (!this.supabase) return {};
     
     if (!this.isSignedIn()) {

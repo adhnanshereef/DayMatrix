@@ -19,24 +19,24 @@ import { User } from '@supabase/supabase-js';
         
         <div class="nav-menu" [class.nav-menu-open]="isMenuOpen()">
           <div class="nav-links">
-            <a routerLink="/" (click)="toggleMobileMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+            <a routerLink="/" (click)="closeToggleMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
               Home
             </a>
             @if(user) {
-            <a routerLink="/dashboard" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+            <a routerLink="/dashboard" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Dashboard
             </a>
-            <a routerLink="/tasks" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+            <a routerLink="/tasks" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Tasks
             </a>
-            <a routerLink="/analytics" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+            <a routerLink="/analytics" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Analytics
             </a>
           }@else{
-            <a routerLink="/signin" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+            <a routerLink="/signin" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               SignIn
             </a>
-            <a routerLink="/signup" (click)="toggleMobileMenu()" routerLinkActive="active" class="nav-link">
+            <a routerLink="/signup" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               SignUp
             </a>
           }
@@ -57,11 +57,11 @@ import { User } from '@supabase/supabase-js';
             </button>
             
             @if (!user) {
-            <button class="cta-button" (click)="toggleMobileMenu()" >
+            <button class="cta-button" (click)="closeToggleMenu()" >
               Get Started
             </button>
             } @else {
-            <button class="cta-button" (click)="signOut();toggleMobileMenu()" >
+            <button class="cta-button" (click)="signOut();closeToggleMenu()" >
               SignOut &nbsp;
              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M5 12h14m-7-7 7 7-7 7"/>
@@ -107,6 +107,9 @@ export class NavigationComponent implements OnInit {
 
   protected toggleMobileMenu(): void {
     this.isMenuOpen.update(open => !open);
+  }
+  protected closeToggleMenu(){
+    this.isMenuOpen.set(false);
   }
 
   async signOut(): Promise<void> {
