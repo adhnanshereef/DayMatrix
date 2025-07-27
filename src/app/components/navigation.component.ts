@@ -62,8 +62,8 @@ import { User } from '@supabase/supabase-js';
             </button>
             } @else {
             <button class="cta-button" (click)="signOut();closeToggleMenu()" >
-              SignOut &nbsp;
-             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              SignOut
+             <svg class="ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                   <path d="M5 12h14m-7-7 7 7-7 7"/>
                 </svg>
             </button>

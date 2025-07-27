@@ -130,5 +130,21 @@ export class SupabaseService {
     }
   }
 
+  // DELETE
+  async deleteTask(taskId: string) {
+    if (!this.supabase) return;
+    const { error } = await this.supabase
+      .from('tasks')
+      .delete()
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error deleting task:', error);
+      alert('Error deleting task: ' + error.message);
+    } else {
+      this.loadTasks(); // Refresh the list
+    }
+  }
+
 
 }
