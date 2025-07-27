@@ -19,9 +19,6 @@ import { User } from '@supabase/supabase-js';
         
         <div class="nav-menu" [class.nav-menu-open]="isMenuOpen()">
           <div class="nav-links">
-            <a routerLink="/" (click)="closeToggleMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
-              Home
-            </a>
             @if(user) {
             <a routerLink="/dashboard" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Dashboard
@@ -29,10 +26,13 @@ import { User } from '@supabase/supabase-js';
             <a routerLink="/tasks" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Tasks
             </a>
-            <a routerLink="/analytics" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
+            <!-- <a routerLink="/analytics" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               Analytics
-            </a>
+            </a> -->
           }@else{
+             <a routerLink="/" (click)="closeToggleMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+              Home
+            </a>
             <a routerLink="/signin" (click)="closeToggleMenu()" routerLinkActive="active" class="nav-link">
               SignIn
             </a>

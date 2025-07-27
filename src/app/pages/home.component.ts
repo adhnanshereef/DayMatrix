@@ -1,5 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, signal, computed, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { SupabaseService } from '../services/supabase';
 
 @Component({
   selector: 'app-home',
@@ -188,6 +189,20 @@ import { RouterLink } from '@angular/router';
 export class HomeComponent {
   protected readonly isMatrixHovered = signal(false);
   protected readonly highlightedQuadrant = signal<string | null>(null);
+
+  private readonly supabaseService = inject(SupabaseService);
+  private readonly router = inject(Router);
+
+  constructor() { }
+
+  async ngOnInit() {
+    if (typeof window !== 'undefined') {
+      const user = await this.supabaseService.isSignedIn();
+      if (user) {
+        this.router.navigate(['/dashboard']);
+      }
+    }
+  }
   
   protected readonly features = signal([
     {
