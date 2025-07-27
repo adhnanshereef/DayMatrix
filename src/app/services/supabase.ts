@@ -44,7 +44,7 @@ export class SupabaseService {
   }
 
   isSignedIn(): boolean {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       return this.user$.value !== null;
     }
     return true;
@@ -93,7 +93,7 @@ export class SupabaseService {
 
   async createTask(task: TaskInput) {
     if (!this.supabase) return {};
-    
+
     if (!this.isSignedIn()) {
       alert('You must be signed in to create a task');
       return {};
@@ -146,5 +146,56 @@ export class SupabaseService {
     }
   }
 
+  // UPDATE
+  async updateTask(task: Task) {
+    if (!this.supabase) return{};
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({
+        task: task.task,
+        description: task.description,
+        due: task.due
+      })
+      .eq('id', task.id);
 
+    if (error) {
+      console.error('Error updating task:', error);
+      alert('Error updating task: ' + error.message);
+    } else {
+      this.loadTasks(); // Refresh the list
+    }
+    return { error };
+  }
+
+  // Set as completed
+  async completeTask(taskId: string) {
+    if (!this.supabase) return;
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({ completed: true })
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error completing task:', error);
+      alert('Error completing task: ' + error.message);
+    } else {
+      this.loadTasks(); // Refresh the list
+    }
+  }
+
+  // Set as uncompleted
+  async uncompleteTask(taskId: string) {
+    if (!this.supabase) return;
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({ completed: false })
+      .eq('id', taskId);
+
+    if (error) {
+      console.error('Error uncompleting task:', error);
+      alert('Error uncompleting task: ' + error.message);
+    } else {
+      this.loadTasks(); // Refresh the list
+    }
+  }
 }

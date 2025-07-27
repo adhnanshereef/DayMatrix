@@ -15,17 +15,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         <div class="quadrant">
         <div class="task-list">  
         @for(task of tasks$ | async; track task.id) {
-            @if(task.quadrant === 'important-urgent') {
+            @if(task.quadrant === 'important-urgent' && !task.completed ) {
               <div class="task-item" [class.completed]="task.completed">
                 <div class="task-header">
                   <h3>{{ task.task }}</h3>
                   <div class="task-dropdown">
                     <button class="dropdown-toggle" type="button" tabindex="0">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
                     </button>
                     <div class="dropdown-menu">
-                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item edit" (click)="clickEditTask(task)" >Edit</button>
                       <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                      <button class="dropdown-item delete" (click)="completeTask(task.id)">Completed</button>
                     </div>
                   </div>
                 </div>
@@ -47,17 +48,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         <div class="quadrant">
         <div class="task-list"> 
         @for(task of tasks$ | async; track task.id) {
-            @if(task.quadrant === 'important-not-urgent') {
+            @if(task.quadrant === 'important-not-urgent' && !task.completed ) {
               <div class="task-item" [class.completed]="task.completed">
                 <div class="task-header">
                   <h3>{{ task.task }}</h3>
                   <div class="task-dropdown">
                     <button class="dropdown-toggle" type="button" tabindex="0">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
                     </button>
                     <div class="dropdown-menu">
-                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item edit" (click)="clickEditTask(task)" >Edit</button>
                       <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                      <button class="dropdown-item delete" (click)="completeTask(task.id)">Completed</button>
                     </div>
                   </div>
                 </div>
@@ -79,17 +81,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         <div class="quadrant">
         <div class="task-list">  
         @for(task of tasks$ | async; track task.id) {
-            @if(task.quadrant === 'not-important-urgent') {
+            @if(task.quadrant === 'not-important-urgent' && !task.completed ) {
               <div class="task-item" [class.completed]="task.completed">
                 <div class="task-header">
                   <h3>{{ task.task }}</h3>
                   <div class="task-dropdown">
                     <button class="dropdown-toggle" type="button" tabindex="0">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
                     </button>
                     <div class="dropdown-menu">
-                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item edit" (click)="clickEditTask(task)" >Edit</button>
                       <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                      <button class="dropdown-item delete" (click)="completeTask(task.id)">Completed</button>
                     </div>
                   </div>
                 </div>
@@ -111,17 +114,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
         <div class="quadrant">
         <div class="task-list">  
         @for(task of tasks$ | async; track task.id) {
-            @if(task.quadrant === 'not-important-not-urgent') {
+            @if(task.quadrant === 'not-important-not-urgent' && !task.completed ) {
               <div class="task-item" [class.completed]="task.completed">
                 <div class="task-header">
                   <h3>{{ task.task }}</h3>
                   <div class="task-dropdown">
                     <button class="dropdown-toggle" type="button" tabindex="0">
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--primary-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
                     </button>
                     <div class="dropdown-menu">
-                      <button class="dropdown-item edit">Edit</button>
+                      <button class="dropdown-item edit" (click)="clickEditTask(task)" >Edit</button>
                       <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                      <button class="dropdown-item delete" (click)="completeTask(task.id)">Completed</button>
                     </div>
                   </div>
                 </div>
@@ -141,6 +145,48 @@ import { AsyncPipe, DatePipe } from '@angular/common';
           </div>
         </div>
       </div>
+      <div class="center">
+        <div class="quadrant">
+        <h3>Completed Tasks</h3>
+      <div class="task-list">  
+      @for(task of tasks$ | async; track task.id) {
+          @if(task.completed) {
+            <div class="task-item" [class.completed]="task.completed">
+              <div class="task-header">
+                <h3>{{ task.task }}</h3>
+                <div class="task-dropdown">
+                  <button class="dropdown-toggle" type="button" tabindex="0">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--text-color)" stroke-width="2"><circle cx="4" cy="10" r="2"/><circle cx="10" cy="10" r="2"/><circle cx="16" cy="10" r="2"/></svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <button class="dropdown-item edit" (click)="clickEditTask(task)" >Edit</button>
+                    <button class="dropdown-item delete" (click)="deleteTask(task.id)">Delete</button>
+                    <button class="dropdown-item delete" (click)="uncompleteTask(task.id)">Not Completed</button>
+                  </div>
+                </div>
+              </div>
+              @if(task.description) {
+                <p class="task-des" >{{ task.description }}</p>
+              }
+              @if(task.due) {
+                <p class="task-due" >Due: {{ task.due | date }}</p>
+              }
+            </div>
+          }
+        }
+      </div>
+        
+      </div>
+      </div>
+      @if(editTask) {
+        <div class="edit-task-container">
+        <div class="add-task">
+            <input class="add-input" (keyup.enter)="updateTask()" [(ngModel)]="editTask.task"  type="text" placeholder="Add a task..." />
+            <input class="add-due" [(ngModel)]="editTask.due" type="date" />
+        </div>
+      </div>
+      }
+
     </div>
   `,
   styles: [`
@@ -170,6 +216,10 @@ import { AsyncPipe, DatePipe } from '@angular/common';
       padding: 20px;
       border-radius: 8px;
       box-shadow: var(--shadow-color);
+    }
+
+    .center .quadrant{
+      width: 90%;
     }
 
     .task-list{
@@ -241,6 +291,18 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 
     .task-dropdown {
       position: relative;
+    }
+
+    .edit-task-container {
+      position: fixed;
+      bottom: 40px;
+      display: flex;
+      justify-content: center;
+      padding: 0 40px;
+      width: 100%;
+    }
+    .edit-task-container .add-task{
+      width: 100%;
     }
 
     .dropdown-toggle {
@@ -336,6 +398,7 @@ export class TasksComponent implements OnInit {
     t3: { task: '', description: '', due: null, quadrant: 'not-important-urgent' },
     t4: { task: '', description: '', due: null, quadrant: 'not-important-not-urgent' }
   };
+  editTask: Task | undefined;
 
   tasks$: Observable<Task[]>;
   private readonly supabaseService = inject(SupabaseService);
@@ -368,6 +431,25 @@ export class TasksComponent implements OnInit {
     // Any additional initialization logic can go here
   }
 
+  clickEditTask(task: Task) {
+    this.editTask = task;
+  }
+
+  async updateTask() {
+    if (!this.editTask) {
+      alert('No task selected for editing');
+      return;
+    }
+
+    const { error } = await this.supabaseService.updateTask(this.editTask);
+    if (error) {
+      console.error('Error updating task:', error);
+      alert('Error updating task: ' + error.message);
+    } else {
+      this.clearEditTask();
+    }
+  }
+
   deleteTask(taskId: string) {
     this.supabaseService.deleteTask(taskId)
   }
@@ -380,4 +462,16 @@ export class TasksComponent implements OnInit {
       t4: { task: '', description: '', due: null, quadrant: 'not-important-not-urgent' }
     }
   }
+  clearEditTask() {
+    this.editTask = undefined;
+  }
+
+  async completeTask(taskId: string) {
+    await this.supabaseService.completeTask(taskId);
+  }
+
+  async uncompleteTask(taskId: string) {
+    await this.supabaseService.uncompleteTask(taskId);
+  }
+
 }
