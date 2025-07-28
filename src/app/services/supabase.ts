@@ -72,6 +72,14 @@ export class SupabaseService {
     });
   }
 
+  async editName(name: string) {
+    if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
+    const { error } = await this.supabase.auth.updateUser({
+      data: { displayName: name }
+    });
+    return { error };
+  }
+
   get user() {
     return this.user$.getValue();
   }

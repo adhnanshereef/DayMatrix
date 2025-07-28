@@ -196,10 +196,10 @@ export class HomeComponent {
   constructor() { }
 
   async ngOnInit() {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
       const user = await this.supabaseService.isSignedIn();
       if (user) {
-        this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']);
       }
     }
   }
