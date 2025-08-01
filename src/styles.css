@@ -38,6 +38,7 @@ body {
 :root[data-theme="dark"] {
   --primary-color: #0db3d9;
   --accent-color: #b00457;
+  --secondary-color: #1c5f78;
   --text-color: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.7);
   --bg-color: #000000;
@@ -49,12 +50,18 @@ body {
   --street-light-glow: rgba(13, 179, 217, 0.3);
   --street-light-color: rgba(13, 179, 217, 0.1);
   --grid-color: rgba(13, 179, 217, 0.3);
+  
+  /* RGB values for torch lighting */
+  --primary-rgb: 13, 179, 217;
+  --accent-rgb: 176, 4, 87;
+  --secondary-rgb: 28, 95, 120;
 }
 
 /* Light Theme - Warm Street Light Effect */
 :root[data-theme="light"] {
   --primary-color: #1c5f78;
   --accent-color: #b00457;
+  --secondary-color: #0891b2;
   --text-color: #2d3748;
   --text-secondary: rgba(45, 55, 72, 0.7);
   --bg-color: #faf5f0;
@@ -66,59 +73,21 @@ body {
   --street-light-glow: rgba(255, 193, 7, 0.3);
   --street-light-color: rgba(255, 193, 7, 0.1);
   --grid-color: rgba(28, 95, 120, 0.2);
+  
+  /* RGB values for torch lighting - more subtle in light theme */
+  --primary-rgb: 28, 95, 120;
+  --accent-rgb: 176, 4, 87;
+  --secondary-rgb: 8, 145, 178;
 }
 
-/* Dynamic Background with Street Light Effect */
+/* Dynamic Background - Subtle Grid Pattern Only */
 body {
   background: var(--bg-color);
   color: var(--text-color);
   position: relative;
 }
 
-/* Street Light Background Effect - Actual torch/street light beams */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: -2;
-  opacity: 0.4;
-  background: 
-    /* Top left street light */
-    conic-gradient(from 135deg at 10% 5%, 
-      transparent 0deg, 
-      var(--street-light-glow) 30deg, 
-      var(--street-light-color) 35deg, 
-      var(--street-light-glow) 40deg, 
-      transparent 70deg),
-    /* Top right street light */
-    conic-gradient(from 225deg at 90% 8%, 
-      transparent 0deg, 
-      var(--street-light-glow) 30deg, 
-      var(--street-light-color) 35deg, 
-      var(--street-light-glow) 40deg, 
-      transparent 70deg),
-    /* Bottom left street light */
-    conic-gradient(from 45deg at 15% 85%, 
-      transparent 0deg, 
-      var(--street-light-glow) 25deg, 
-      var(--street-light-color) 30deg, 
-      var(--street-light-glow) 35deg, 
-      transparent 60deg),
-    /* Bottom right street light */
-    conic-gradient(from 315deg at 85% 90%, 
-      transparent 0deg, 
-      var(--street-light-glow) 25deg, 
-      var(--street-light-color) 30deg, 
-      var(--street-light-glow) 35deg, 
-      transparent 60deg);
-  animation: streetLightFlicker 6s ease-in-out infinite;
-}
-
-/* Grid overlay */
+/* Subtle Grid overlay only - no torch background */
 body::after {
   content: '';
   position: fixed;
@@ -128,33 +97,25 @@ body::after {
   bottom: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.15;
+  opacity: 0.08;
   background-image: 
     linear-gradient(var(--grid-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size: 40px 40px;
-  animation: gridPulse 10s ease-in-out infinite alternate;
-}
-
-@keyframes streetLightFlicker {
-  0% { opacity: 0.3; }
-  25% { opacity: 0.5; }
-  50% { opacity: 0.4; }
-  75% { opacity: 0.6; }
-  100% { opacity: 0.35; }
+  animation: gridPulse 15s ease-in-out infinite alternate;
 }
 
 @keyframes gridPulse {
   0% { 
-    opacity: 0.1;
+    opacity: 0.05;
     background-size: 40px 40px;
   }
   50% { 
-    opacity: 0.2;
+    opacity: 0.12;
     background-size: 42px 42px;
   }
   100% { 
-    opacity: 0.15;
+    opacity: 0.08;
     background-size: 40px 40px;
   }
 }
@@ -336,23 +297,6 @@ p {
 
 /* Responsive Design Base */
 @media (max-width: 768px) {
-  body::before {
-    background: 
-      /* Mobile - fewer, smaller street lights */
-      conic-gradient(from 135deg at 5% 10%, 
-        transparent 0deg, 
-        var(--street-light-glow) 35deg, 
-        var(--street-light-color) 40deg, 
-        var(--street-light-glow) 45deg, 
-        transparent 80deg),
-      conic-gradient(from 225deg at 95% 15%, 
-        transparent 0deg, 
-        var(--street-light-glow) 35deg, 
-        var(--street-light-color) 40deg, 
-        var(--street-light-glow) 45deg, 
-        transparent 80deg);
-  }
-  
   body::after {
     background-size: 30px 30px;
   }
