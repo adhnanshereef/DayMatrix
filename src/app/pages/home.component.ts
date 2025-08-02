@@ -562,9 +562,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   ]);
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.initializeAnimations();
     this.startCounterAnimations();
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+      const user = await this.supabaseService.isSignedIn();
+      if (user) {
+      this.router.navigate(['/dashboard']);
+      }
+    }
   }
 
   ngOnDestroy(): void {
