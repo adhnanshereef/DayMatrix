@@ -75,6 +75,28 @@ export class SupabaseService {
     });
   }
 
+  async signInWithGoogle() {
+    if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
+    
+    return await this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+  }
+
+  async signUpWithGoogle() {
+    if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
+    
+    return await this.supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`
+      }
+    });
+  }
+
   async editName(name: string) {
     if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
     const { error } = await this.supabase.auth.updateUser({

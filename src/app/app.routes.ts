@@ -39,6 +39,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/auth/signin.component').then(m => m.SigninComponent)
   },
   {
+    path: 'auth/callback',
+    loadComponent: () => import('./pages/auth/callback.component').then(m => m.CallbackComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./components/not-found.component').then(m => m.NotFoundComponent)
   }

@@ -1,39 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-not-found',
   imports: [RouterLink],
   template: `
-    <div class="notfound-page">
-      <div class="notfound-3d-bg">
-        <div class="floating-element element1"></div>
-        <div class="floating-element element2"></div>
-        <div class="floating-element element3"></div>
-        <div class="floating-element element4"></div>
-        <div class="floating-element element5"></div>
-      </div>
-      <div class="notfound-card">
-        <div class="card-glow"></div>
-        <div class="notfound-content">
-          <div class="notfound-404">
-            <span class="digit digit-4" data-text="4">4</span>
-            <span class="digit digit-0" data-text="0">0</span>
-            <span class="digit digit-4-2" data-text="4">4</span>
+    <!-- Background Gradient Shapes -->
+    <div class="background-gradient-shapes">
+      <div class="gradient-oval gradient-oval-1"></div>
+      <div class="gradient-oval gradient-oval-2"></div>
+      <div class="gradient-oval gradient-oval-3"></div>
+      <div class="gradient-oval gradient-oval-4"></div>
+      <div class="gradient-oval gradient-oval-5"></div>
+    </div>
+
+    <div class="page-container">
+      <div class="notfound-content">
+        <!-- 3D Object Container -->
+        <div class="object-3d-container">
+          <div class="cube-3d">
+            <div class="face front">4</div>
+            <div class="face back">4</div>
+            <div class="face top">0</div>
+            <div class="face bottom">0</div>
+            <div class="face left">4</div>
+            <div class="face right">4</div>
           </div>
-          <div class="error-details">
-            <h2 class="notfound-title">Page Not Found</h2>
-            <p class="notfound-message">
-              The page you're looking for seems to have vanished into the digital void.
+        </div>
+
+        <!-- Error Card -->
+        <div class="error-card">
+          <div class="error-header">
+            <div class="error-number">404</div>
+            <h1 class="error-title">Page Not Found</h1>
+            <p class="error-description">
+              The page you're looking for doesn't exist or has been moved.
             </p>
           </div>
+
           <div class="action-buttons">
-            <button class="notfound-home primary-btn" routerLink="/" type="button">
-              <span class="btn-text">Return Home</span>
-              <div class="btn-ripple"></div>
+            <button class="primary-action-btn" routerLink="/" type="button">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+              </svg>
+              <span>Return Home</span>
             </button>
-            <button class="secondary-btn" type="button" onclick="history.back()">
-              <span class="btn-text">Go Back</span>
+            <button class="secondary-action-btn" type="button" (click)="goBack()">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5m7 7l-7-7 7-7"/>
+              </svg>
+              <span>Go Back</span>
             </button>
           </div>
         </div>
@@ -42,4 +60,10 @@ import { RouterLink } from '@angular/router';
   `,
   styleUrls: ['./not-found.component.css']
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  private readonly location = inject(Location);
+
+  goBack(): void {
+    this.location.back();
+  }
+}
