@@ -32,11 +32,11 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    loadComponent: () => import('./pages/signup.component').then(m => m.SignupComponent)
+    loadComponent: () => import('./pages/auth/signup.component').then(m => m.SignupComponent)
   },
   {
     path: 'signin',
-    loadComponent: () => import('./pages/signin.component').then(m => m.SigninComponent)
+    loadComponent: () => import('./pages/auth/signin.component').then(m => m.SigninComponent)
   },
   {
     path: '**',
