@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SupabaseService } from '../../services/supabase';
 import { SeoService } from '../../services/seo.service';
 import { AlertService } from '../../services/alert.service';
@@ -238,7 +238,7 @@ import { AlertService } from '../../services/alert.service';
             <!-- Sign In Link -->
             <div class="auth-footer">
               <span>Already have an account?</span>
-              <a routerLink="/signin" class="auth-link">Sign in</a>
+              <a [routerLink]="['/signin']" [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : {}" class="auth-link">Sign in</a>
             </div>
           </div>
            <!-- Terms and Policy Agreement -->
@@ -364,10 +364,12 @@ export class SignupComponent implements OnInit, OnDestroy {
     passwordError = signal('');
     confirmPasswordError = signal('');
     currentBenefit = signal(0);
+    returnUrl = signal<string | null>(null);
 
     private readonly supabaseService = inject(SupabaseService);
     private readonly seoService = inject(SeoService);
     private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
     private readonly alertService = inject(AlertService);
     private benefitInterval?: number;
 
@@ -411,6 +413,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     constructor() { }
 
     async ngOnInit() {
+        // Get returnUrl from query params
+        this.returnUrl.set(this.route.snapshot.queryParams['returnUrl'] || null);
+        
         // Update SEO for sign up page
         this.seoService.updateCustomSEO({
             title: 'Sign Up - DayMatrix | Start Your Productivity Transformation',
@@ -423,7 +428,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         if (typeof window !== 'undefined') {
             const user = await this.supabaseService.isSignedIn();
             if (user) {
-                this.router.navigate(['/dashboard']);
+                this.navigateAfterAuth();
             }
 
             // Start benefit rotation
@@ -449,6 +454,11 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.benefitInterval = window.setInterval(() => {
             this.currentBenefit.set((this.currentBenefit() + 1) % 3);
         }, 4000);
+    }
+
+    private navigateAfterAuth(): void {
+        const redirectUrl = this.returnUrl() || '/dashboard';
+        this.router.navigate([redirectUrl]);
     }
 
     private validateForm(): boolean {
@@ -544,7 +554,9 @@ export class SignupComponent implements OnInit, OnDestroy {
                     'Account created successfully! Please check your email to verify your account before signing in.',
                     'Welcome to DayMatrix'
                 );
-                this.router.navigate(['/signin']);
+                // Navigate to signin with returnUrl preserved
+                const queryParams = this.returnUrl() ? { returnUrl: this.returnUrl() } : {};
+                this.router.navigate(['/signin'], { queryParams });
             }
         } catch (err) {
             this.alertService.error('An unexpected error occurred. Please try again later.', 'Sign Up Failed');
@@ -557,6 +569,11 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isLoading.set(true);
 
         try {
+            // Store return URL in session storage for OAuth callback
+            if (this.returnUrl()) {
+                sessionStorage.setItem('returnUrl', this.returnUrl()!);
+            }
+            
             const { error } = await this.supabaseService.signUpWithGoogle();
 
             if (error) {

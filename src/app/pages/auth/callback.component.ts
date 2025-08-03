@@ -128,7 +128,15 @@ export class CallbackComponent implements OnInit {
 
       if (user) {
         this.alertService.success('Successfully signed in with Google!', 'Welcome to DayMatrix');
-        this.router.navigate(['/dashboard']);
+        
+        // Check for stored return URL from OAuth flow
+        const returnUrl = sessionStorage.getItem('returnUrl');
+        if (returnUrl) {
+          sessionStorage.removeItem('returnUrl'); // Clean up
+          this.router.navigate([returnUrl]);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       } else {
         this.alertService.warning('Authentication was cancelled or failed. Please try again.', 'Authentication Cancelled');
         this.router.navigate(['/signin']);

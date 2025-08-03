@@ -104,11 +104,7 @@
 .gradient-oval-3 {
   width: 500px;
   height: 250px;
-  background: linear-gradient(
-    225deg,
-    #6c757d,
-    var(--primary-color)
-  );
+  background: linear-gradient(225deg, #6c757d, var(--primary-color));
   top: 65%;
   left: 15%;
   animation-delay: -16s;
@@ -142,11 +138,7 @@
 .gradient-oval-4 {
   width: 300px;
   height: 350px;
-  background: linear-gradient(
-    315deg,
-    var(--primary-color),
-    #ffc107
-  );
+  background: linear-gradient(315deg, var(--primary-color), #ffc107);
   top: 85%;
   right: 10%;
   animation-delay: -12s;
@@ -249,8 +241,8 @@
   font-weight: 700;
   background: linear-gradient(
     135deg,
-    var(--primary-color),
-    var(--accent-color)
+    var(--accent-color) 50%,
+    var(--primary-color) 75%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -344,8 +336,7 @@
   padding: 40px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 var(--shadow-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 var(--shadow-color);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;

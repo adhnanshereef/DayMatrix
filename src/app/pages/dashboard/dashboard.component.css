@@ -248,7 +248,11 @@
 .dashboard-title {
   font-size: 3.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--accent-color) 50%,
+    var(--primary-color) 75%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -304,7 +308,11 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -362,13 +370,17 @@
 }
 
 .stat-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -392,7 +404,11 @@
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -772,13 +788,18 @@
 }
 
 .priority-bar::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
@@ -837,16 +858,16 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .priority-stats {
     align-self: flex-end;
     gap: 0.5rem;
   }
-  
+
   .priority-count {
     font-size: 1.125rem;
   }
-  
+
   .priority-percentage {
     font-size: 0.8rem;
   }
@@ -856,58 +877,58 @@
   .priority-chart {
     gap: 1.25rem;
   }
-  
+
   .priority-item {
     gap: 0.5rem;
   }
-  
+
   .priority-info {
     gap: 0.5rem;
   }
-  
+
   .priority-icon {
     width: 20px;
     height: 20px;
   }
-  
+
   .priority-icon svg {
     width: 16px;
     height: 16px;
   }
-  
+
   .priority-name {
     font-size: 0.8rem;
   }
-  
+
   .priority-description {
     font-size: 0.7rem;
   }
-  
+
   .total-tasks {
     font-size: 0.8rem;
     padding: 0.2rem 0.6rem;
   }
-  
+
   /* Mobile-optimized task checkboxes */
   .task-checkbox {
     width: 24px;
     height: 24px;
     min-width: 24px;
   }
-  
+
   .task-checkbox .check-icon {
     width: 14px;
     height: 14px;
   }
-  
+
   .task-item {
     padding: 0.75rem;
   }
-  
+
   .task-info h4 {
     font-size: 0.8rem;
   }
-  
+
   .task-info p {
     font-size: 0.7rem;
   }
@@ -944,7 +965,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, var(--accent-color), var(--primary-color));
+  background: linear-gradient(
+    180deg,
+    var(--accent-color),
+    var(--primary-color)
+  );
   border-radius: 10px;
   transition: all 0.3s ease;
 }
@@ -1054,7 +1079,11 @@
 }
 
 .create-task-btn {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -1076,7 +1105,7 @@
   .chart-widget {
     grid-column: span 12;
   }
-  
+
   .progress-widget,
   .actions-widget,
   .achievement-widget {
@@ -1089,34 +1118,34 @@
     padding: 1rem;
     padding-top: 4rem;
   }
-  
+
   .dashboard-title {
     font-size: 2.5rem;
   }
-  
+
   .stats-overview {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
   }
-  
+
   .welcome-card {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .welcome-content {
     text-align: center;
   }
-  
+
   .dashboard-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .dashboard-widget {
     grid-column: span 1;
   }
-  
+
   .action-grid {
     grid-template-columns: 1fr;
   }
@@ -1126,31 +1155,31 @@
   .dashboard-title {
     font-size: 2rem;
   }
-  
+
   .stats-overview {
     grid-template-columns: 1fr;
   }
-  
+
   .welcome-card {
     padding: 1.5rem;
   }
-  
+
   .stat-card {
     padding: 1rem;
   }
-  
+
   .dashboard-widget {
     padding: 1rem;
   }
-  
+
   .widget-header {
     margin-bottom: 1rem;
   }
-  
+
   .progress-chart {
     height: 100px;
   }
-  
+
   .progress-bar {
     height: 60px;
     width: 16px;
