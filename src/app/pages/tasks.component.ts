@@ -4,6 +4,7 @@ import { QuadrantKey, Task, TaskInput } from '../interfaces/tasks';
 import { Observable, map } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-tasks',
@@ -707,6 +708,7 @@ export class TasksComponent implements OnInit {
 
   // Services and data
   private readonly supabaseService = inject(SupabaseService);
+  private readonly alertService = inject(AlertService);
   readonly tasks$ = this.supabaseService.tasks$;
 
   // Modal task form data
@@ -810,7 +812,7 @@ export class TasksComponent implements OnInit {
   // Task operations
   async createTask(): Promise<void> {
     if (!this.modalTask.task.trim()) {
-      alert('Task title is required');
+      this.alertService.warning('Please enter a task title to continue.', 'Task Title Required');
       return;
     }
 
@@ -818,13 +820,13 @@ export class TasksComponent implements OnInit {
       const { error } = await this.supabaseService.createTask(this.modalTask);
       if (error) {
         console.error('Error creating task:', error);
-        alert('Error creating task: ' + error.message);
+        this.alertService.error('Unable to create task. Please check your connection and try again.', 'Create Failed');
       } else {
         this.closeTaskModal();
       }
     } catch (error) {
       console.error('Error creating task:', error);
-      alert('An unexpected error occurred while creating the task');
+      this.alertService.error('Something went wrong while creating your task. Please try again.', 'Create Failed');
     }
   }
 
@@ -836,7 +838,7 @@ export class TasksComponent implements OnInit {
 
   async updateTask(): Promise<void> {
     if (!this.editingTask.task.trim()) {
-      alert('Task title is required');
+      this.alertService.warning('Please enter a task title to continue.', 'Task Title Required');
       return;
     }
 
@@ -844,26 +846,30 @@ export class TasksComponent implements OnInit {
       const { error } = await this.supabaseService.updateTask(this.editingTask);
       if (error) {
         console.error('Error updating task:', error);
-        alert('Error updating task: ' + error.message);
+        this.alertService.error('Unable to save changes. Please check your connection and try again.', 'Update Failed');
       } else {
         this.closeEditModal();
       }
     } catch (error) {
       console.error('Error updating task:', error);
-      alert('An unexpected error occurred while updating the task');
+      this.alertService.error('Something went wrong while saving your changes. Please try again.', 'Update Failed');
     }
   }
 
   async deleteTask(taskId: string): Promise<void> {
-    if (confirm('Are you sure you want to delete this task?')) {
-      try {
-        await this.supabaseService.deleteTask(taskId);
-        this.closeTaskDetail();
-      } catch (error) {
-        console.error('Error deleting task:', error);
-        alert('An unexpected error occurred while deleting the task');
+    this.alertService.confirmationAlert(
+      'This will permanently delete this task. Are you sure you want to continue?',
+      async () => {
+        try {
+          await this.supabaseService.deleteTask(taskId);
+          this.alertService.deleteSuccessAlert('Task');
+          this.closeTaskDetail();
+        } catch (error) {
+          console.error('Error deleting task:', error);
+          this.alertService.error('Unable to delete task. Please try again.', 'Delete Failed');
+        }
       }
-    }
+    );
   }
 
   async toggleTaskCompletion(task: Task): Promise<void> {
@@ -875,7 +881,7 @@ export class TasksComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error toggling task completion:', error);
-      alert('An unexpected error occurred while updating the task');
+      this.alertService.error('Unable to update task status. Please try again.', 'Update Failed');
     }
   }
 

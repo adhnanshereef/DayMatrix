@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlertService } from '../services/alert.service';
 
 @Component({
     selector: 'app-settings',
@@ -27,17 +28,32 @@ import { FormsModule } from '@angular/forms';
             <div class="settings-user-email">{{ user?.email }}</div>
           </div>
         </div>
+        <button class="delete-btn" (click)="showDeleteModal = true">Delete Account</button>
         <button class="signout-btn" (click)="signOut()">Sign Out</button>
       </div>
       @if (showEditModal) {
         <div class="modal-overlay">
           <div class="modal glass-intense">
             <h2>Edit Name</h2>
-            <form (submit)="submitEditName($event)">
+            <form (submit)="submitEditName()">
               <input class="modal-input" [(ngModel)]="editNameValue" name="editNameValue" placeholder="Enter new name" required />
               <div class="modal-actions">
                 <button class="modal-save" type="submit">Save</button>
                 <button class="modal-cancel" type="button" (click)="closeEditModal()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+      @if (showDeleteModal) {
+        <div class="modal-overlay">
+          <div class="modal glass-intense">
+            <h2>Delete Account</h2>
+            <form (submit)="deleteAccount()">
+              <input class="modal-input" type="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required />
+              <div class="modal-actions">
+                <button class="modal-save" type="submit">Delete</button>
+                <button class="modal-cancel" type="button" (click)="showDeleteModal = false">Cancel</button>
               </div>
             </form>
           </div>
@@ -140,6 +156,25 @@ import { FormsModule } from '@angular/forms';
     .signout-btn:hover {
       background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
     }
+    .delete-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 14px 0;
+      border-radius: 12px;
+      background: var(--surface-color);
+      color: var(--accent-color);
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      transition: background 0.3s;
+    }
+    .delete-btn:hover {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -240,9 +275,12 @@ export class SettingsComponent implements OnInit {
     user: User | null = null;
     showEditModal = false;
     editNameValue = '';
+    showDeleteModal = false;
+    password = '';
 
     protected readonly supabaseService = inject(SupabaseService);
     private readonly router = inject(Router);
+    private readonly alertService = inject(AlertService);
 
     ngOnInit(): void {
         if (typeof window !== 'undefined') {
@@ -265,15 +303,39 @@ export class SettingsComponent implements OnInit {
     closeEditModal() {
       this.showEditModal = false;
     }
-    async submitEditName(event: Event) {
-      event.preventDefault();
+    async submitEditName() {
       if (!this.editNameValue.trim()) return;
       const { error } = await this.supabaseService.editName(this.editNameValue.trim());
       if (!error) {
         if (this.user) this.user.user_metadata['displayName'] = this.editNameValue.trim();
         this.closeEditModal();
+        this.alertService.success('Your name has been updated successfully!', 'Profile Updated');
       } else {
-        alert(error.message || 'Failed to update name');
+        this.alertService.error('Failed to update your name. Please try again.', 'Update Failed');
       }
     }
+
+    deleteAccount() {
+        // if(this.password.trim() === '') {
+        //     this.alertService.warning('Please enter your password to confirm account deletion.', 'Password Required');
+        //     return;
+        // }
+        
+        // this.alertService.confirmationAlert(
+        //     'This will permanently delete your account and all your data. This action cannot be undone.',
+        //     () => {
+        //         this.supabaseService.deleteAccount(this.password).then(() => {
+        //             this.alertService.success('Your account has been deleted.', 'Account Deleted');
+        //             this.router.navigate(['/signin']);
+        //         }).catch(error => {
+        //             if (error.message.includes('Invalid login credentials')) {
+        //                 this.alertService.error('Incorrect password. Please try again.', 'Authentication Failed');
+        //             } else {
+        //                 this.alertService.error('Failed to delete account. Please try again later.', 'Delete Failed');
+        //             }
+        //         });
+        //     }
+        // );
+    }
+
 }
