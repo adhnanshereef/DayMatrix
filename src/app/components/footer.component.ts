@@ -68,13 +68,13 @@ import { User } from '@supabase/supabase-js';
                     </svg>
                     Tasks
                   </a>
-                  <a routerLink="/analytics" class="footer-link">
+                  <!-- <a routerLink="/analytics" class="footer-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M3 3v18h18"/>
                       <path d="M18 17l-3-3-4 4-4-4-4 4"/>
                     </svg>
                     Analytics
-                  </a>
+                  </a> -->
                   <a routerLink="/settings" class="footer-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <circle cx="12" cy="12" r="3"/>
