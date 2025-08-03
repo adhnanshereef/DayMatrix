@@ -105,23 +105,6 @@ export class SupabaseService {
     return { error };
   }
 
-  async deleteAccount(password: string) {
-    if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
-    if (!this.user) return { error: { message: 'User not signed in' } };
-    const { error } = await this.supabase.auth.signInWithPassword({
-      email: this.user.email ? this.user.email : '',
-      password
-    });
-    if (error) return { error };
-
-
-    const { error: deleteError } = await this.supabase.auth.admin.deleteUser(this.user.id);
-    if (deleteError) return { error: deleteError };
-
-    this.user$.next(null);
-    return { error: null };
-  }
-
   get user() {
     return this.user$.getValue();
   }
