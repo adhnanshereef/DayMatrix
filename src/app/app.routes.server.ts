@@ -12,18 +12,18 @@ export const serverRoutes: ServerRoute[] = [
   // { path: 'signup', renderMode: RenderMode.Prerender },
   // { path: 'signin', renderMode: RenderMode.Prerender },
   // { path: 'auth/callback', renderMode: RenderMode.Prerender },
-  {
-    path: 'dashboard',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'tasks',
-    renderMode: RenderMode.Client,
-  },
-  {
-    path: 'settings',
-    renderMode: RenderMode.Client,
-  },
+  // {
+  //   path: 'dashboard',
+  //   renderMode: RenderMode.Client,
+  // },
+  // {
+  //   path: 'tasks',
+  //   renderMode: RenderMode.Client,
+  // },
+  // {
+  //   path: 'settings',
+  //   renderMode: RenderMode.Client,
+  // },
   {
     path: '**',
     renderMode: RenderMode.Prerender
