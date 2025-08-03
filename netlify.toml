@@ -33,4 +33,4 @@
   command = "npm start"
   port = 4200
   targetPort = 4200
-  publish = "dist/day-matrix"
+  publish = "dist/DayMatrix/browser"
