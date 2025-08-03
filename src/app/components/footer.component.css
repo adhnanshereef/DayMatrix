@@ -1,40 +1,45 @@
-.floating-footer {
+/* CSS Variables for theme colors - Match navigation.component.css */
+:root[data-theme="dark"] {
+  --primary-color: #0db3d9;
+  --accent-color: #b00457;
+  --text-color: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(13, 179, 217, 0.2);
+}
+
+:root[data-theme="light"] {
+  --primary-color: #1c5f78;
+  --accent-color: #b00457;
+  --text-color: #2d3748;
+  --text-secondary: rgba(45, 55, 72, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: rgba(255, 223, 0, 0.15);
+}
+
+/* Modern Footer - Matches navbar design philosophy */
+.modern-footer {
   position: relative;
-  margin: 80px 20px 20px;
+  margin: 60px 20px 20px;
   
-  /* Glassmorphism base */
-  background: rgba(255, 255, 255, 0.1);
+  /* Glassmorphism matching navbar */
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 8px 32px var(--glass-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
-.floating-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 24px;
-  background-image: 
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 25px 25px;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Dark theme street light effect */
-:root[data-theme="dark"] .floating-footer {
+/* Dark theme enhancements */
+:root[data-theme="dark"] .modern-footer {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
@@ -43,8 +48,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Light theme street light effect */
-:root[data-theme="light"] .floating-footer {
+/* Light theme enhancements */
+:root[data-theme="light"] .modern-footer {
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(28, 95, 120, 0.2);
   box-shadow: 
@@ -55,7 +60,7 @@
 
 .footer-container {
   padding: 48px 32px 24px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -66,6 +71,7 @@
   margin-bottom: 48px;
 }
 
+/* Brand Section - Matches navbar brand styling */
 .footer-brand {
   display: flex;
   flex-direction: column;
@@ -108,6 +114,7 @@
   margin: 0;
 }
 
+/* Navigation Links Grid */
 .footer-links {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -145,39 +152,44 @@
   gap: 12px;
 }
 
+/* Footer Links - Match navbar link styling */
 .footer-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  padding: 4px 0;
   
-  &:hover {
-    color: var(--primary-color);
-    transform: translateX(4px);
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: -8px;
-    top: 50%;
-    transform: translateY(-50%) scaleX(0);
-    width: 4px;
-    height: 4px;
-    background: var(--primary-color);
-    border-radius: 50%;
+  svg {
+    width: 16px;
+    height: 16px;
     transition: transform 0.3s ease;
   }
   
-  &:hover::before {
-    transform: translateY(-50%) scaleX(1);
+  &:hover {
+    color: var(--primary-color);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--glass-shadow);
+  }
+  
+  &:hover svg {
+    transform: scale(1.1);
   }
 }
 
+/* Footer Bottom */
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--glass-border);
   padding-top: 24px;
 }
 
@@ -187,10 +199,43 @@
   justify-content: space-between;
 }
 
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .copyright {
   color: var(--text-secondary);
   font-size: 0.9rem;
   margin: 0;
+}
+
+/* Developer Credit - Prominent but tasteful */
+.developer-credit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.developer-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    color: var(--accent-color);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--glass-shadow);
+  }
 }
 
 .footer-actions {
@@ -199,30 +244,36 @@
   gap: 24px;
 }
 
+/* Theme Toggle - Match navbar styling */
 .footer-theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
   color: var(--text-color);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--glass-bg);
     transform: rotate(15deg) scale(1.1);
+    box-shadow: 0 8px 32px var(--glass-shadow);
   }
 }
 
+/* Social Links - Enhanced styling */
 .social-links {
   display: flex;
   align-items: center;
@@ -233,10 +284,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
   color: var(--text-secondary);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -247,25 +301,131 @@
   }
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--glass-bg);
     color: var(--primary-color);
     transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--glass-shadow);
   }
 }
 
-/* CSS Variables for theme colors */
-:root[data-theme="dark"] {
-  --primary-color: #0db3d9;
-  --accent-color: #b00457;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
+/* Responsive Design */
+
+/* Tablet Responsive */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    text-align: center;
+  }
+  
+  .footer-links {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  
+  .footer-description {
+    max-width: none;
+  }
 }
 
-:root[data-theme="light"] {
-  --primary-color: #1c5f78;
-  --accent-color: #b00457;
-  --text-color: #2d3748;
-  --text-secondary: rgba(45, 55, 72, 0.7);
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .modern-footer {
+    margin: 60px 10px 10px;
+    border-radius: 20px;
+  }
+  
+  .footer-container {
+    padding: 36px 24px 20px;
+  }
+  
+  .footer-content {
+    gap: 36px;
+    margin-bottom: 36px;
+  }
+  
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  
+  .footer-bottom-content {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .footer-actions {
+    gap: 20px;
+  }
+  
+  .social-links {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-footer {
+    margin: 40px 5px 5px;
+    border-radius: 16px;
+  }
+  
+  .footer-container {
+    padding: 24px 16px 16px;
+  }
+  
+  .footer-brand-text {
+    font-size: 1.5rem;
+  }
+  
+  .footer-logo {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .link-group-title {
+    font-size: 0.95rem;
+  }
+  
+  .footer-link {
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+  
+  .copyright {
+    font-size: 0.8rem;
+  }
+  
+  .developer-credit {
+    font-size: 0.75rem;
+  }
+  
+  .footer-theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .social-link {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .footer-link:hover,
+  .footer-theme-toggle:hover,
+  .social-link:hover,
+  .developer-link:hover {
+    transform: none;
+  }
+
+  .footer-link:active,
+  .footer-theme-toggle:active,
+  .social-link:active,
+  .developer-link:active {
+    transform: scale(0.95);
+  }
 }
 
 /* Tablet Responsive */
