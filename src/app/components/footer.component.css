@@ -202,7 +202,6 @@
 .footer-left {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .copyright {
@@ -357,6 +356,10 @@
   
   .footer-actions {
     gap: 20px;
+  }
+
+  .footer-left {
+    align-items: center;
   }
   
   .social-links {
