@@ -1,0 +1,73 @@
+# DayMatrix Robots.txt
+# https://daymatrix.app/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /home
+Allow: /signin
+Allow: /signup
+
+# Disallow authenticated/personal areas from indexing
+Disallow: /dashboard
+Disallow: /tasks
+Disallow: /analytics
+Disallow: /settings
+Disallow: /auth/
+
+# Allow access to static assets
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico
+Allow: /*.webp
+
+# Sitemap location
+Sitemap: https://daymatrix.app/sitemap.xml
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Specific instructions for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Block unwanted crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: spbot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /

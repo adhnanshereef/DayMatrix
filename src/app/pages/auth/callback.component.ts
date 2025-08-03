@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -94,9 +95,19 @@ import { AlertService } from '../../services/alert.service';
 export class CallbackComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
   private readonly alertService = inject(AlertService);
 
   async ngOnInit() {
+    // Update SEO for callback page
+    this.seoService.updateCustomSEO({
+      title: 'Authentication - DayMatrix | Completing Your Sign In',
+      description: 'Completing your secure authentication to DayMatrix. You\'ll be redirected to your productivity dashboard momentarily to start using the Eisenhower Matrix methodology.',
+      keywords: 'DayMatrix authentication, OAuth callback, secure login, Google authentication, sign in process',
+      url: 'https://daymatrix.app/auth/callback',
+      type: 'website'
+    });
+
     try {
       // Get the current session after OAuth redirect
       const response = await this.supabaseService.getUser();

@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -365,6 +366,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     currentBenefit = signal(0);
 
     private readonly supabaseService = inject(SupabaseService);
+    private readonly seoService = inject(SeoService);
     private readonly router = inject(Router);
     private readonly alertService = inject(AlertService);
     private benefitInterval?: number;
@@ -409,6 +411,15 @@ export class SignupComponent implements OnInit, OnDestroy {
     constructor() { }
 
     async ngOnInit() {
+        // Update SEO for sign up page
+        this.seoService.updateCustomSEO({
+            title: 'Sign Up - DayMatrix | Start Your Productivity Transformation',
+            description: 'Create your free DayMatrix account and begin mastering productivity with the Eisenhower Matrix. Join thousands of professionals achieving peak performance through strategic task prioritization.',
+            keywords: 'DayMatrix signup, create account, free productivity app, Eisenhower Matrix signup, task manager registration, productivity transformation, strategic planning tool, decision-making framework access',
+            url: 'https://daymatrix.app/signup',
+            type: 'website'
+        });
+
         if (typeof window !== 'undefined') {
             const user = await this.supabaseService.isSignedIn();
             if (user) {
