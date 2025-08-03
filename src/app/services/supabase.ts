@@ -1,10 +1,11 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { SignInPayload, SignupPayload } from '../interfaces/profile';
 import { BehaviorSubject } from 'rxjs';
 import { Task, TaskInput } from '../interfaces/tasks';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class SupabaseService {
 
   private tasksSubject = new BehaviorSubject<Task[]>([]);
   tasks$ = this.tasksSubject.asObservable();
+
+  private readonly alertService = inject(AlertService);
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
@@ -80,6 +83,23 @@ export class SupabaseService {
     return { error };
   }
 
+  async deleteAccount(password: string) {
+    if (!this.supabase) return { error: { message: 'Supabase client not available on server' } };
+    if (!this.user) return { error: { message: 'User not signed in' } };
+    const { error } = await this.supabase.auth.signInWithPassword({
+      email: this.user.email ? this.user.email : '',
+      password
+    });
+    if (error) return { error };
+
+
+    const { error: deleteError } = await this.supabase.auth.admin.deleteUser(this.user.id);
+    if (deleteError) return { error: deleteError };
+
+    this.user$.next(null);
+    return { error: null };
+  }
+
   get user() {
     return this.user$.getValue();
   }
@@ -103,7 +123,7 @@ export class SupabaseService {
     if (!this.supabase) return {};
 
     if (!this.isSignedIn()) {
-      alert('You must be signed in to create a task');
+      this.alertService.warning('Please sign in to create tasks', 'Authentication Required');
       return {};
     }
 
@@ -148,7 +168,7 @@ export class SupabaseService {
 
     if (error) {
       console.error('Error deleting task:', error);
-      alert('Error deleting task: ' + error.message);
+      this.alertService.error('Failed to delete task. Please try again.', 'Delete Failed');
     } else {
       this.loadTasks(); // Refresh the list
     }
@@ -168,7 +188,7 @@ export class SupabaseService {
 
     if (error) {
       console.error('Error updating task:', error);
-      alert('Error updating task: ' + error.message);
+      this.alertService.error('Failed to update task. Please try again.', 'Update Failed');
     } else {
       this.loadTasks(); // Refresh the list
     }
@@ -185,7 +205,7 @@ export class SupabaseService {
 
     if (error) {
       console.error('Error completing task:', error);
-      alert('Error completing task: ' + error.message);
+      this.alertService.error('Failed to mark task as complete. Please try again.', 'Update Failed');
     } else {
       this.loadTasks(); // Refresh the list
     }
@@ -201,7 +221,7 @@ export class SupabaseService {
 
     if (error) {
       console.error('Error uncompleting task:', error);
-      alert('Error uncompleting task: ' + error.message);
+      this.alertService.error('Failed to mark task as incomplete. Please try again.', 'Update Failed');
     } else {
       this.loadTasks(); // Refresh the list
     }

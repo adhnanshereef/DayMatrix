@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../services/supabase';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-signin',
@@ -32,6 +33,7 @@ export class SigninComponent implements OnInit {
 
   private readonly supabaseService = inject(SupabaseService);
   private readonly router = inject(Router);
+  private readonly alertService = inject(AlertService);
 
   constructor() { }
 
@@ -50,7 +52,13 @@ export class SigninComponent implements OnInit {
       password: this.password(),
     });
     if (error) {
-      alert('Error signing in: ' + error.message);
+      if (error.message.includes('Invalid login credentials')) {
+        this.alertService.error('Invalid email or password. Please check your credentials.', 'Sign In Failed');
+      } else if (error.message.includes('Email not confirmed')) {
+        this.alertService.warning('Please check your email and confirm your account first.', 'Email Confirmation Required');
+      } else {
+        this.alertService.error('Unable to sign in. Please try again later.', 'Sign In Failed');
+      }
     } else {
       this.router.navigate(['/dashboard']);
     }

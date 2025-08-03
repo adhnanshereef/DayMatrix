@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../services/supabase';
+import { AlertService } from '../services/alert.service';
 
 @Component({
     selector: 'app-signup',
@@ -34,6 +35,7 @@ export class SignupComponent implements OnInit {
 
     private readonly supabaseService = inject(SupabaseService);
     private readonly router = inject(Router);
+    private readonly alertService = inject(AlertService);
 
     async ngOnInit() {
         if (typeof window !== 'undefined') {
@@ -55,11 +57,19 @@ export class SignupComponent implements OnInit {
         if (error) {
             // Avoid alert in SSR
             if (typeof window !== 'undefined') {
-                alert('Error signing up: ' + error.message);
+                if (error.message.includes('User already registered')) {
+                    this.alertService.warning('An account with this email already exists. Please sign in instead.', 'Account Exists');
+                } else if (error.message.includes('Password should be at least')) {
+                    this.alertService.error('Password must be at least 6 characters long.', 'Invalid Password');
+                } else if (error.message.includes('Invalid email')) {
+                    this.alertService.error('Please enter a valid email address.', 'Invalid Email');
+                } else {
+                    this.alertService.error('Unable to create account. Please try again later.', 'Sign Up Failed');
+                }
             }
         } else {
             if (typeof window !== 'undefined') {
-                alert('Check your email to confirm your account!');
+                this.alertService.success('Account created! Please check your email to verify your account.', 'Welcome to DayMatrix');
                 this.router.navigate(['/signin']);
             }
         }

@@ -1,0 +1,522 @@
+/* Alert Container - Premium Glassmorphism Design */
+
+.alert-container {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 420px;
+  width: 100%;
+  padding: 24px;
+}
+
+/* Position variants */
+.alert-container[data-position="top-right"] {
+  top: 0;
+  right: 0;
+  align-items: flex-end;
+}
+
+.alert-container[data-position="top-left"] {
+  top: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+.alert-container[data-position="bottom-right"] {
+  bottom: 0;
+  right: 0;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+}
+
+.alert-container[data-position="bottom-left"] {
+  bottom: 0;
+  left: 0;
+  align-items: flex-start;
+  flex-direction: column-reverse;
+}
+
+.alert-container[data-position="top-center"] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.alert-container[data-position="bottom-center"] {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  flex-direction: column-reverse;
+}
+
+/* Alert Toast */
+.alert-toast {
+  pointer-events: auto;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 320px;
+  max-width: 100%;
+  padding: 20px 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  
+  /* Enhanced Glassmorphism */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  
+  /* Animation */
+  animation: slideInAlert 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light theme adjustments */
+:root[data-theme="light"] .alert-toast {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(28, 95, 120, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.alert-toast:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Alert type specific styling */
+.alert-toast[data-type="success"] {
+  border-left: 4px solid #10b981;
+}
+
+.alert-toast[data-type="error"] {
+  border-left: 4px solid #ef4444;
+}
+
+.alert-toast[data-type="warning"] {
+  border-left: 4px solid #f59e0b;
+}
+
+.alert-toast[data-type="info"] {
+  border-left: 4px solid var(--primary-color);
+}
+
+/* Background gradient for visual interest */
+.alert-gradient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.alert-toast[data-type="success"] .alert-gradient-bg {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.alert-toast[data-type="error"] .alert-gradient-bg {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.alert-toast[data-type="warning"] .alert-gradient-bg {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.alert-toast[data-type="info"] .alert-gradient-bg {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}
+
+/* Alert Icon */
+.alert-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.alert-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.alert-toast[data-type="success"] .alert-icon {
+  color: #10b981;
+}
+
+.alert-toast[data-type="error"] .alert-icon {
+  color: #ef4444;
+}
+
+.alert-toast[data-type="warning"] .alert-icon {
+  color: #f59e0b;
+}
+
+.alert-toast[data-type="info"] .alert-icon {
+  color: var(--primary-color);
+}
+
+/* Alert Content */
+.alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.alert-message {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.alert-timestamp {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  margin-top: 8px;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+/* Action Button */
+.alert-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.alert-action-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.alert-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.4);
+}
+
+.alert-action-btn:active {
+  transform: translateY(0);
+}
+
+.alert-cancel-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.alert-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.alert-cancel-btn:active {
+  transform: translateY(0);
+}
+
+/* Dismiss Button */
+.alert-dismiss-btn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 2px;
+}
+
+.alert-dismiss-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  transform: scale(1.1);
+}
+
+.alert-dismiss-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Progress Bar */
+.alert-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.alert-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  transform-origin: left;
+  animation: progressShrink linear;
+}
+
+/* Animations */
+@keyframes slideInAlert {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Position-specific slide animations */
+.alert-container[data-position*="left"] .alert-toast {
+  animation: slideInAlertLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.alert-container[data-position*="center"] .alert-toast {
+  animation: slideInAlertCenter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.alert-container[data-position*="bottom"] .alert-toast {
+  animation: slideInAlertBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInAlertLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes slideInAlertCenter {
+  from {
+    opacity: 0;
+    transform: translateY(-100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInAlertBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes progressShrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Dismissal animation */
+.alert-toast.dismissing {
+  animation: slideOutAlert 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideOutAlert {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%) scale(0.95);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .alert-container {
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: auto !important;
+    transform: none !important;
+    max-width: none;
+    padding: 16px;
+    align-items: stretch !important;
+  }
+  
+  .alert-toast {
+    min-width: 0;
+    border-radius: 16px;
+    padding: 16px 20px;
+  }
+  
+  .alert-content {
+    margin-right: 8px;
+  }
+  
+  .alert-title {
+    font-size: 0.95rem;
+  }
+  
+  .alert-message {
+    font-size: 0.85rem;
+  }
+  
+  .alert-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .alert-action-btn,
+  .alert-cancel-btn {
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .alert-container {
+    padding: 12px;
+  }
+  
+  .alert-toast {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  
+  .alert-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .alert-actions {
+    margin-top: 10px;
+    gap: 6px;
+  }
+  
+  .alert-action-btn,
+  .alert-cancel-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .alert-toast {
+    border-width: 2px;
+    background: var(--bg-color);
+  }
+  
+  .alert-toast[data-type="success"] {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+  }
+  
+  .alert-toast[data-type="error"] {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+  }
+  
+  .alert-toast[data-type="warning"] {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+  }
+  
+  .alert-toast[data-type="info"] {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .alert-toast {
+    animation: fadeInAlert 0.2s ease-out;
+  }
+  
+  .alert-toast.dismissing {
+    animation: fadeOutAlert 0.2s ease-out forwards;
+  }
+  
+  .alert-progress-bar {
+    animation: none;
+    background: var(--primary-color);
+  }
+  
+  @keyframes fadeInAlert {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes fadeOutAlert {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+}
