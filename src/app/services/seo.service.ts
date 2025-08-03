@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs/operators';
 
 export interface SEOData {
@@ -24,6 +25,8 @@ export class SeoService {
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
   private readonly router = inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
   
   private readonly defaultSEO: SEOData = {
     title: 'DayMatrix - Master Productivity with the Eisenhower Matrix',
@@ -102,12 +105,15 @@ export class SeoService {
   };
 
   constructor() {
-    // Update SEO data on route changes
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.updateSEOData(event.url);
-      });
+    // Only set up route listener in browser environment
+    if (this.isBrowser) {
+      // Update SEO data on route changes
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: NavigationEnd) => {
+          this.updateSEOData(event.url);
+        });
+    }
   }
 
   updateSEOData(url?: string): void {
@@ -179,6 +185,9 @@ export class SeoService {
   }
 
   setCanonicalUrl(url: string): void {
+    // Only manipulate DOM in browser environment
+    if (!this.isBrowser) return;
+    
     // Remove existing canonical link
     const existingCanonical = document.querySelector('link[rel="canonical"]');
     if (existingCanonical) {
@@ -193,6 +202,9 @@ export class SeoService {
   }
 
   setStructuredData(seoData: SEOData): void {
+    // Only manipulate DOM in browser environment
+    if (!this.isBrowser) return;
+    
     // Remove existing structured data
     const existingSD = document.querySelector('script[type="application/ld+json"]#dynamic-structured-data');
     if (existingSD) {
