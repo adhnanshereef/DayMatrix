@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, computed, signal } from '@angular/core';
-import { SupabaseService } from '../services/supabase';
-import { QuadrantKey, Task, TaskInput } from '../interfaces/tasks';
-import { Observable, map } from 'rxjs';
+import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
+import { QuadrantKey, Task, TaskInput } from '../../interfaces/tasks';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { AlertService } from '../services/alert.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-tasks',
@@ -708,6 +708,7 @@ export class TasksComponent implements OnInit {
 
   // Services and data
   private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
   private readonly alertService = inject(AlertService);
   readonly tasks$ = this.supabaseService.tasks$;
 
@@ -743,6 +744,15 @@ export class TasksComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    // Update SEO for tasks page
+    this.seoService.updateCustomSEO({
+      title: 'Task Manager - DayMatrix | Eisenhower Matrix Task Prioritization',
+      description: 'Organize and prioritize your tasks using the proven Eisenhower Matrix framework. Categorize tasks by urgency and importance for maximum productivity. Manage your four quadrants: Do, Decide, Delegate, Delete.',
+      keywords: 'task manager, task prioritization, Eisenhower Matrix tasks, urgent important matrix, productivity tasks, task organization, four quadrants, strategic task management, task categorization, priority matrix',
+      url: 'https://daymatrix.app/tasks',
+      type: 'webapp'
+    });
+
     // Component initialization
   }
 

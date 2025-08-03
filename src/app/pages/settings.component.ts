@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { SupabaseService } from '../services/supabase';
+import { SeoService } from '../services/seo.service';
 import { Router } from '@angular/router';
 import { User } from '@supabase/supabase-js';
 import { CommonModule } from '@angular/common';
@@ -279,10 +280,20 @@ export class SettingsComponent implements OnInit {
     password = '';
 
     protected readonly supabaseService = inject(SupabaseService);
+    private readonly seoService = inject(SeoService);
     private readonly router = inject(Router);
     private readonly alertService = inject(AlertService);
 
     ngOnInit(): void {
+        // Update SEO for settings page
+        this.seoService.updateCustomSEO({
+            title: 'Settings - DayMatrix | Customize Your Productivity Experience',
+            description: 'Personalize your DayMatrix experience with customizable settings. Configure preferences, manage account details, customize notifications, and optimize your productivity workflow for maximum effectiveness.',
+            keywords: 'DayMatrix settings, account management, productivity preferences, app configuration, notification settings, workflow customization, user preferences, productivity optimization settings',
+            url: 'https://daymatrix.app/settings',
+            type: 'webapp'
+        });
+
         if (typeof window !== 'undefined') {
             this.supabaseService.user$.subscribe(user => {
                 this.user = user;

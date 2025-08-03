@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
+import { SeoService } from '../services/seo.service';
 
 @Component({
   selector: 'app-not-found',
@@ -60,8 +61,20 @@ import { Location } from '@angular/common';
   `,
   styleUrls: ['./not-found.component.css']
 })
-export class NotFoundComponent {
+export class NotFoundComponent implements OnInit {
   private readonly location = inject(Location);
+  private readonly seoService = inject(SeoService);
+
+  ngOnInit(): void {
+    // Update SEO for 404 page
+    this.seoService.updateCustomSEO({
+      title: '404 - Page Not Found | DayMatrix',
+      description: 'The page you\'re looking for doesn\'t exist or has been moved. Return to DayMatrix to continue your productivity journey with the Eisenhower Matrix methodology.',
+      keywords: '404, page not found, DayMatrix, productivity app, Eisenhower Matrix',
+      url: 'https://daymatrix.app/404',
+      type: 'website'
+    });
+  }
 
   goBack(): void {
     this.location.back();

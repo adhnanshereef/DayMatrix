@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, OnDestroy, computed, signal } from '@angular/core';
-import { SupabaseService } from '../services/supabase';
+import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
 import { User } from '@supabase/supabase-js';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { AlertService } from '../services/alert.service';
-import { Task } from '../interfaces/tasks';
+import { AlertService } from '../../services/alert.service';
+import { Task } from '../../interfaces/tasks';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -296,6 +297,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: User | null = null;
   
   private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
   private readonly router = inject(Router);
   private readonly alertService = inject(AlertService);
   
@@ -330,11 +332,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
+    // Update SEO for dashboard page
+    this.seoService.updateCustomSEO({
+      title: 'Dashboard - DayMatrix | Your Productivity Command Center',
+      description: 'Access your personalized productivity dashboard. Monitor tasks, track progress, and optimize your workflow using the Eisenhower Matrix methodology.',
+      keywords: 'productivity dashboard, task management, Eisenhower Matrix dashboard, productivity tracking, workflow optimization, task analytics, personal productivity',
+      url: 'https://daymatrix.app/dashboard',
+      type: 'webapp'
+    });
+
     if (typeof window !== 'undefined') {
       // Subscribe to user changes
       this.subscriptions.add(
         this.supabaseService.user$.subscribe(user => {
           this.user = user;
+          // Update SEO with user-specific information if available
+          if (user?.user_metadata?.['displayName']) {
+            this.seoService.updateCustomSEO(
+              this.seoService.generateUserPageSEO(user.user_metadata['displayName'], 'dashboard')
+            );
+          }
         })
       );
 

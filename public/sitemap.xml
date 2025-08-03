@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Home Page (Main Landing) -->
+  <url>
+    <loc>https://daymatrix.app/</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://daymatrix.app/og-image.png</image:loc>
+      <image:title>DayMatrix - Eisenhower Matrix Productivity App</image:title>
+      <image:caption>Master productivity with the proven Eisenhower Matrix methodology</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Home Redirect -->
+  <url>
+    <loc>https://daymatrix.app/home</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Authentication Pages -->
+  <url>
+    <loc>https://daymatrix.app/signin</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://daymatrix.app/signup</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Application Pages (Protected - for sitemap reference only) -->
+  <url>
+    <loc>https://daymatrix.app/dashboard</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://daymatrix.app/tasks</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://daymatrix.app/analytics</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://daymatrix.app/settings</loc>
+    <lastmod>2025-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

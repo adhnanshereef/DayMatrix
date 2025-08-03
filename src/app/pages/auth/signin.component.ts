@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
@@ -269,6 +270,7 @@ export class SigninComponent implements OnInit, OnDestroy {
   currentTestimonial = signal(0);
 
   private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
   private readonly router = inject(Router);
   private readonly alertService = inject(AlertService);
   private testimonialInterval?: number;
@@ -276,6 +278,15 @@ export class SigninComponent implements OnInit, OnDestroy {
   constructor() { }
 
   async ngOnInit() {
+    // Update SEO for sign in page
+    this.seoService.updateCustomSEO({
+      title: 'Sign In - DayMatrix | Access Your Productivity Dashboard',
+      description: 'Sign in to DayMatrix to access your personalized productivity dashboard and start implementing the Eisenhower Matrix methodology. Secure login with Google authentication and email options.',
+      keywords: 'DayMatrix login, sign in, productivity app login, task manager login, Eisenhower Matrix access, secure authentication, Google sign in, productivity dashboard access',
+      url: 'https://daymatrix.app/signin',
+      type: 'website'
+    });
+
     if (typeof window !== 'undefined') {
       const user = await this.supabaseService.isSignedIn();
       if (user) {

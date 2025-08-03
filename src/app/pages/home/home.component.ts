@@ -1,6 +1,7 @@
 import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { SupabaseService } from '../services/supabase';
+import { SupabaseService } from '../../services/supabase';
+import { SeoService } from '../../services/seo.service';
 
 interface Feature {
   title: string;
@@ -56,12 +57,12 @@ interface MatrixPrinciple {
               Eisenhower Matrix Methodology
             </div>
             
-            <h1 class="hero-title">
+            <h1 class="hero-title" itemprop="headline">
               Master Productivity with the
               <span class="gradient-text">Eisenhower Matrix</span>
             </h1>
             
-            <p class="hero-subtitle">
+            <p class="hero-subtitle" itemprop="description">
               Transform decision paralysis into decisive action. DayMatrix implements President Eisenhower's proven decision-making framework, helping you distinguish between urgent and important tasks to achieve peak productivity and strategic focus.
             </p>
             
@@ -402,6 +403,7 @@ interface MatrixPrinciple {
 export class HomeComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
   
   protected readonly isMatrixHovered = signal(false);
   protected readonly highlightedQuadrant = signal<string | null>(null);
@@ -563,6 +565,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   ]);
 
   async ngOnInit() {
+    // Update SEO for home page with comprehensive metadata
+    this.seoService.updateCustomSEO({
+      title: 'DayMatrix - Master Productivity with the Eisenhower Matrix | Task Prioritization App',
+      description: 'Transform decision paralysis into decisive action with DayMatrix. Implement President Eisenhower\'s proven decision-making framework for peak productivity and strategic focus. Join 12,000+ active users achieving 89% productivity increases.',
+      keywords: 'Eisenhower Matrix, productivity app, task prioritization, time management, decision making framework, task manager, productivity tool, urgent important matrix, project management, workflow optimization, President Eisenhower, decision paralysis, strategic focus, quadrant system, crisis management, strategic planning',
+      url: 'https://daymatrix.app/',
+      type: 'website'
+    });
+
     this.initializeAnimations();
     this.startCounterAnimations();
     if (typeof window !== 'undefined' && window.location.pathname === '/') {
