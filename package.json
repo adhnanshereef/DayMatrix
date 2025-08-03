@@ -5,9 +5,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:DayMatrix": "node dist/DayMatrix/server/server.mjs"
+    "serve:ssr:DayMatrix": "node dist/DayMatrix/server/server.mjs",
+    "netlify:dev": "netlify dev",
+    "netlify:build": "ng build --configuration production"
   },
   "prettier": {
     "overrides": [
@@ -40,6 +43,7 @@
     "@angular/build": "^20.1.1",
     "@angular/cli": "^20.1.1",
     "@angular/compiler-cli": "^20.1.0",
+    "@netlify/functions": "^2.8.1",
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
@@ -49,6 +53,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "netlify-cli": "^17.36.4",
     "typescript": "~5.8.2"
   }
 }

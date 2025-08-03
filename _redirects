@@ -1,0 +1,31 @@
+# Netlify Redirects Configuration
+# This file handles client-side routing for Angular SPA
+
+# Handle Angular routes - redirect all non-file requests to index.html
+/*    /index.html   200
+
+# Handle authentication redirects for Supabase OAuth
+/auth/callback  /index.html  200
+
+# Static assets should be served directly (these rules come before the catch-all)
+/assets/*  /assets/:splat  200
+/*.js      /:splat  200
+/*.css     /:splat  200
+/*.png     /:splat  200
+/*.jpg     /:splat  200
+/*.jpeg    /:splat  200
+/*.gif     /:splat  200
+/*.svg     /:splat  200
+/*.ico     /:splat  200
+/*.woff    /:splat  200
+/*.woff2   /:splat  200
+/*.ttf     /:splat  200
+/*.eot     /:splat  200
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https://fyagxftrkmtmggvtepzl.supabase.co https://accounts.google.com; frame-src https://accounts.google.com;
