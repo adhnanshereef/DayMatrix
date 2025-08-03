@@ -1,5 +1,5 @@
 # DayMatrix Robots.txt
-# https://daymatrix.app/robots.txt
+# https://daymatrix.adhnan.tech/robots.txt
 
 User-agent: *
 Allow: /
@@ -26,6 +26,7 @@ Allow: /*.gif
 Allow: /*.svg
 Allow: /*.ico
 Allow: /*.webp
+Allow: /*.xml
 
 # Sitemap location
 Sitemap: https://daymatrix.app/sitemap.xml

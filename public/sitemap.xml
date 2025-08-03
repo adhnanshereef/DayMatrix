@@ -4,12 +4,12 @@
   
   <!-- Home Page (Main Landing) -->
   <url>
-    <loc>https://daymatrix.app/</loc>
+    <loc>https://daymatrix.adhnan.tech/</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://daymatrix.app/og-image.png</image:loc>
+      <image:loc>https://daymatrix.adhnan.tech/favicon.png</image:loc>
       <image:title>DayMatrix - Eisenhower Matrix Productivity App</image:title>
       <image:caption>Master productivity with the proven Eisenhower Matrix methodology</image:caption>
     </image:image>
@@ -17,7 +17,7 @@
 
   <!-- Home Redirect -->
   <url>
-    <loc>https://daymatrix.app/home</loc>
+    <loc>https://daymatrix.adhnan.tech/home</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -25,14 +25,14 @@
 
   <!-- Authentication Pages -->
   <url>
-    <loc>https://daymatrix.app/signin</loc>
+    <loc>https://daymatrix.adhnan.tech/signin</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://daymatrix.app/signup</loc>
+    <loc>https://daymatrix.adhnan.tech/signup</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -40,28 +40,28 @@
 
   <!-- Application Pages (Protected - for sitemap reference only) -->
   <url>
-    <loc>https://daymatrix.app/dashboard</loc>
+    <loc>https://daymatrix.adhnan.tech/dashboard</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://daymatrix.app/tasks</loc>
+    <loc>https://daymatrix.adhnan.tech/tasks</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://daymatrix.app/analytics</loc>
+    <loc>https://daymatrix.adhnan.tech/analytics</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://daymatrix.app/settings</loc>
+    <loc>https://daymatrix.adhnan.tech/settings</loc>
     <lastmod>2025-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -69,14 +69,14 @@
 
   <!-- Legal Pages -->
   <url>
-    <loc>https://daymatrix.app/terms</loc>
+    <loc>https://daymatrix.adhnan.tech/terms</loc>
     <lastmod>2025-01-12</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://daymatrix.app/privacy</loc>
+    <loc>https://daymatrix.adhnan.tech/privacy</loc>
     <lastmod>2025-01-12</lastmod>
     <changefreq>quarterly</changefreq>
     <priority>0.5</priority>
