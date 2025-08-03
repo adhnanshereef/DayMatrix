@@ -34,7 +34,6 @@ import { Subscription } from 'rxjs';
               </div>
               <div class="welcome-content">
                 <h2>Welcome back, {{ user.user_metadata['displayName'] || 'User' }}!</h2>
-                <p>{{ user.email }}</p>
                 <div class="welcome-stats">
                   <span>{{ getCurrentDate() }}</span>
                 </div>
