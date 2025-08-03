@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../services/supabase';
 import { SeoService } from '../../services/seo.service';
@@ -170,7 +170,7 @@ import { AlertService } from '../../services/alert.service';
             <!-- Sign Up Link -->
             <div class="auth-footer">
               <span>Don't have an account?</span>
-              <a routerLink="/signup" class="auth-link">Create account</a>
+              <a [routerLink]="['/signup']" [queryParams]="returnUrl() ? { returnUrl: returnUrl() } : {}" class="auth-link">Create account</a>
             </div>
           </div>
         </div>
@@ -268,16 +268,21 @@ export class SigninComponent implements OnInit, OnDestroy {
   emailError = signal('');
   passwordError = signal('');
   currentTestimonial = signal(0);
+  returnUrl = signal<string | null>(null);
 
   private readonly supabaseService = inject(SupabaseService);
   private readonly seoService = inject(SeoService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly alertService = inject(AlertService);
   private testimonialInterval?: number;
 
   constructor() { }
 
   async ngOnInit() {
+    // Get returnUrl from query params
+    this.returnUrl.set(this.route.snapshot.queryParams['returnUrl'] || null);
+    
     // Update SEO for sign in page
     this.seoService.updateCustomSEO({
       title: 'Sign In - DayMatrix | Access Your Productivity Dashboard',
@@ -290,7 +295,7 @@ export class SigninComponent implements OnInit, OnDestroy {
     if (typeof window !== 'undefined') {
       const user = await this.supabaseService.isSignedIn();
       if (user) {
-        this.router.navigate(['/dashboard']);
+        this.navigateAfterAuth();
       }
       
       // Start testimonial rotation
@@ -312,6 +317,11 @@ export class SigninComponent implements OnInit, OnDestroy {
     this.testimonialInterval = window.setInterval(() => {
       this.currentTestimonial.set((this.currentTestimonial() + 1) % 3);
     }, 5000);
+  }
+
+  private navigateAfterAuth(): void {
+    const redirectUrl = this.returnUrl() || '/dashboard';
+    this.router.navigate([redirectUrl]);
   }
 
   private validateForm(): boolean {
@@ -361,7 +371,7 @@ export class SigninComponent implements OnInit, OnDestroy {
         this.handleSignInError(error);
       } else {
         this.alertService.success('Welcome back! You have been signed in successfully.', 'Sign In Successful');
-        await this.router.navigate(['/dashboard']);
+        this.navigateAfterAuth();
       }
     } catch (err) {
       this.alertService.error('An unexpected error occurred. Please try again.', 'Sign In Failed');
@@ -374,6 +384,11 @@ export class SigninComponent implements OnInit, OnDestroy {
     this.isLoading.set(true);
     
     try {
+      // Store return URL in session storage for OAuth callback
+      if (this.returnUrl()) {
+        sessionStorage.setItem('returnUrl', this.returnUrl()!);
+      }
+      
       const { error } = await this.supabaseService.signInWithGoogle();
       
       if (error) {
