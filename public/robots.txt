@@ -6,6 +6,8 @@ Allow: /
 Allow: /home
 Allow: /signin
 Allow: /signup
+Allow: /terms
+Allow: /privacy
 
 # Disallow authenticated/personal areas from indexing
 Disallow: /dashboard

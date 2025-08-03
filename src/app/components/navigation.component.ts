@@ -9,13 +9,6 @@ import { User } from '@supabase/supabase-js';
   imports: [RouterLink, RouterLinkActive],
   template: `
     <nav class="modern-nav">
-      <!-- Background Gradient Shapes for Visual Interest -->
-      <div class="nav-gradient-shapes">
-        <div class="gradient-oval nav-oval-1"></div>
-        <div class="gradient-oval nav-oval-2"></div>
-        <div class="gradient-oval nav-oval-3"></div>
-      </div>
-      
       <div class="nav-container">
         <div class="nav-brand">
           <a routerLink="/" class="brand-link">

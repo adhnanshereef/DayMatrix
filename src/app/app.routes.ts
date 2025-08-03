@@ -43,6 +43,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/auth/callback.component').then(m => m.CallbackComponent)
   },
   {
+    path: 'terms',
+    loadComponent: () => import('./pages/legal/terms.component').then(m => m.TermsComponent)
+  },
+  {
+    path: 'privacy',
+    loadComponent: () => import('./pages/legal/privacy.component').then(m => m.PrivacyComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./components/not-found.component').then(m => m.NotFoundComponent)
   }
