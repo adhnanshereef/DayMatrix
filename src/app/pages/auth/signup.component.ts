@@ -7,9 +7,9 @@ import { SeoService } from '../../services/seo.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
-    selector: 'app-signup',
-    imports: [RouterLink, FormsModule],
-    template: `
+  selector: 'app-signup',
+  imports: [RouterLink, FormsModule],
+  template: `
     <!-- Background Gradient Shapes -->
     <div class="background-gradient-shapes">
       <div class="gradient-oval gradient-oval-1"></div>
@@ -349,265 +349,268 @@ import { AlertService } from '../../services/alert.service';
       </div>     
     </div>
   `,
-    styleUrl: './auth.component.css'
+  styleUrl: './auth.component.css'
 })
 export class SignupComponent implements OnInit, OnDestroy {
-    name = signal('');
-    email = signal('');
-    password = signal('');
-    confirmPassword = signal('');
-    showPassword = signal(false);
-    showConfirmPassword = signal(false);
-    isLoading = signal(false);
-    nameError = signal('');
-    emailError = signal('');
-    passwordError = signal('');
-    confirmPasswordError = signal('');
-    currentBenefit = signal(0);
-    returnUrl = signal<string | null>(null);
+  name = signal('');
+  email = signal('');
+  password = signal('');
+  confirmPassword = signal('');
+  showPassword = signal(false);
+  showConfirmPassword = signal(false);
+  isLoading = signal(false);
+  nameError = signal('');
+  emailError = signal('');
+  passwordError = signal('');
+  confirmPasswordError = signal('');
+  currentBenefit = signal(0);
+  returnUrl = signal<string | null>(null);
 
-    private readonly supabaseService = inject(SupabaseService);
-    private readonly seoService = inject(SeoService);
-    private readonly router = inject(Router);
-    private readonly route = inject(ActivatedRoute);
-    private readonly alertService = inject(AlertService);
-    private benefitInterval?: number;
+  private readonly supabaseService = inject(SupabaseService);
+  private readonly seoService = inject(SeoService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly alertService = inject(AlertService);
+  private benefitInterval?: number;
 
-    // Computed password strength
-    passwordStrength = computed(() => {
-        const pwd = this.password();
-        if (!pwd) return { score: 0, text: '', class: '' };
+  // Computed password strength
+  passwordStrength = computed(() => {
+    const pwd = this.password();
+    if (!pwd) return { score: 0, text: '', class: '' };
 
-        let score = 0;
-        let text = '';
-        let className = '';
+    let score = 0;
+    let text = '';
+    let className = '';
 
-        // Length check
-        if (pwd.length >= 8) score++;
-        if (pwd.length >= 12) score++;
+    // Length check
+    if (pwd.length >= 8) score++;
+    if (pwd.length >= 12) score++;
 
-        // Character variety checks
-        if (/[a-z]/.test(pwd)) score++;
-        if (/[A-Z]/.test(pwd)) score++;
-        if (/[0-9]/.test(pwd)) score++;
-        if (/[^A-Za-z0-9]/.test(pwd)) score++;
+    // Character variety checks
+    if (/[a-z]/.test(pwd)) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[^A-Za-z0-9]/.test(pwd)) score++;
 
-        // Determine strength
-        if (score <= 2) {
-            text = 'Weak';
-            className = 'strength-weak';
-        } else if (score <= 4) {
-            text = 'Good';
-            className = 'strength-good';
-        } else if (score <= 5) {
-            text = 'Strong';
-            className = 'strength-strong';
-        } else {
-            text = 'Very Strong';
-            className = 'strength-very-strong';
-        }
+    // Determine strength
+    if (score <= 2) {
+      text = 'Weak';
+      className = 'strength-weak';
+    } else if (score <= 4) {
+      text = 'Good';
+      className = 'strength-good';
+    } else if (score <= 5) {
+      text = 'Strong';
+      className = 'strength-strong';
+    } else {
+      text = 'Very Strong';
+      className = 'strength-very-strong';
+    }
 
-        return { score: Math.min(score, 4), text, class: className };
+    return { score: Math.min(score, 4), text, class: className };
+  });
+
+  constructor() { }
+
+  async ngOnInit() {
+    // Get returnUrl from query params
+    this.returnUrl.set(this.route.snapshot.queryParams['returnUrl'] || null);
+
+    // Update SEO for sign up page
+    this.seoService.updateCustomSEO({
+      title: 'Sign Up - DayMatrix | Start Your Productivity Transformation',
+      description: 'Create your free DayMatrix account and begin mastering productivity with the Eisenhower Matrix. Join thousands of professionals achieving peak performance through strategic task prioritization.',
+      keywords: 'DayMatrix signup, create account, free productivity app, Eisenhower Matrix signup, task manager registration, productivity transformation, strategic planning tool, decision-making framework access',
+      url: 'https://daymatrix.app/signup',
+      type: 'website'
     });
 
-    constructor() { }
-
-    async ngOnInit() {
-        // Get returnUrl from query params
-        this.returnUrl.set(this.route.snapshot.queryParams['returnUrl'] || null);
-        
-        // Update SEO for sign up page
-        this.seoService.updateCustomSEO({
-            title: 'Sign Up - DayMatrix | Start Your Productivity Transformation',
-            description: 'Create your free DayMatrix account and begin mastering productivity with the Eisenhower Matrix. Join thousands of professionals achieving peak performance through strategic task prioritization.',
-            keywords: 'DayMatrix signup, create account, free productivity app, Eisenhower Matrix signup, task manager registration, productivity transformation, strategic planning tool, decision-making framework access',
-            url: 'https://daymatrix.app/signup',
-            type: 'website'
-        });
-
-        if (typeof window !== 'undefined') {
-            const user = await this.supabaseService.isSignedIn();
-            if (user) {
-                this.navigateAfterAuth();
-            }
-
-            // Start benefit rotation
-            this.startBenefitRotation();
+    if (typeof window !== 'undefined') {
+      const isSignedIn = await this.supabaseService.isSignedIn();
+      if (isSignedIn) {
+        const user = this.supabaseService.user$.value;
+        if (user) {
+          this.navigateAfterAuth();
         }
+      }
+
+      // Start benefit rotation
+      this.startBenefitRotation();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.benefitInterval) {
+      clearInterval(this.benefitInterval);
+    }
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword.set(!this.showPassword());
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.showConfirmPassword.set(!this.showConfirmPassword());
+  }
+
+  private startBenefitRotation() {
+    this.benefitInterval = window.setInterval(() => {
+      this.currentBenefit.set((this.currentBenefit() + 1) % 3);
+    }, 4000);
+  }
+
+  private navigateAfterAuth(): void {
+    const redirectUrl = this.returnUrl() || '/dashboard';
+    this.router.navigate([redirectUrl]);
+  }
+
+  private validateForm(): boolean {
+    let isValid = true;
+
+    // Reset errors
+    this.nameError.set('');
+    this.emailError.set('');
+    this.passwordError.set('');
+    this.confirmPasswordError.set('');
+
+    // Name validation
+    const nameValue = this.name().trim();
+    if (!nameValue) {
+      this.nameError.set('Full name is required');
+      isValid = false;
+    } else if (nameValue.length < 2) {
+      this.nameError.set('Name must be at least 2 characters');
+      isValid = false;
+    } else if (!/^[a-zA-Z\s'-]+$/.test(nameValue)) {
+      this.nameError.set('Name can only contain letters, spaces, hyphens, and apostrophes');
+      isValid = false;
     }
 
-    ngOnDestroy() {
-        if (this.benefitInterval) {
-            clearInterval(this.benefitInterval);
-        }
+    // Email validation
+    const emailValue = this.email().trim();
+    if (!emailValue) {
+      this.emailError.set('Email is required');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+      this.emailError.set('Please enter a valid email address');
+      isValid = false;
     }
 
-    togglePasswordVisibility() {
-        this.showPassword.set(!this.showPassword());
+    // Password validation
+    const passwordValue = this.password();
+    if (!passwordValue) {
+      this.passwordError.set('Password is required');
+      isValid = false;
+    } else if (passwordValue.length < 8) {
+      this.passwordError.set('Password must be at least 8 characters');
+      isValid = false;
+    } else if (!/(?=.*[a-z])/.test(passwordValue)) {
+      this.passwordError.set('Password must contain at least one lowercase letter');
+      isValid = false;
+    } else if (!/(?=.*[A-Z])/.test(passwordValue)) {
+      this.passwordError.set('Password must contain at least one uppercase letter');
+      isValid = false;
+    } else if (!/(?=.*\d)/.test(passwordValue)) {
+      this.passwordError.set('Password must contain at least one number');
+      isValid = false;
     }
 
-    toggleConfirmPasswordVisibility() {
-        this.showConfirmPassword.set(!this.showConfirmPassword());
+    // Confirm password validation
+    const confirmPasswordValue = this.confirmPassword();
+    if (!confirmPasswordValue) {
+      this.confirmPasswordError.set('Please confirm your password');
+      isValid = false;
+    } else if (passwordValue !== confirmPasswordValue) {
+      this.confirmPasswordError.set('Passwords do not match');
+      isValid = false;
     }
 
-    private startBenefitRotation() {
-        this.benefitInterval = window.setInterval(() => {
-            this.currentBenefit.set((this.currentBenefit() + 1) % 3);
-        }, 4000);
+    return isValid;
+  }
+
+  isFormValid(): boolean {
+    return this.name().trim().length >= 2 &&
+      this.email().includes('@') &&
+      this.password().length >= 8 &&
+      this.password() === this.confirmPassword() &&
+      this.passwordStrength().score >= 2;
+  }
+
+  async signUp() {
+    if (!this.validateForm()) {
+      return;
     }
 
-    private navigateAfterAuth(): void {
-        const redirectUrl = this.returnUrl() || '/dashboard';
-        this.router.navigate([redirectUrl]);
+    this.isLoading.set(true);
+
+    try {
+      const { error } = await this.supabaseService.signUpWithEmail({
+        name: this.name().trim(),
+        email: this.email().trim(),
+        password: this.password(),
+      });
+
+      if (error) {
+        this.handleSignUpError(error);
+      } else {
+        this.alertService.success(
+          'Account created successfully! Please check your email to verify your account before signing in.',
+          'Welcome to DayMatrix'
+        );
+        // Navigate to signin with returnUrl preserved
+        const queryParams = this.returnUrl() ? { returnUrl: this.returnUrl() } : {};
+        this.router.navigate(['/signin'], { queryParams });
+      }
+    } catch (err) {
+      this.alertService.error('An unexpected error occurred. Please try again later.', 'Sign Up Failed');
+    } finally {
+      this.isLoading.set(false);
     }
+  }
 
-    private validateForm(): boolean {
-        let isValid = true;
+  async signUpWithGoogle() {
+    this.isLoading.set(true);
 
-        // Reset errors
-        this.nameError.set('');
-        this.emailError.set('');
-        this.passwordError.set('');
-        this.confirmPasswordError.set('');
+    try {
+      // Store return URL in session storage for OAuth callback
+      if (this.returnUrl()) {
+        sessionStorage.setItem('returnUrl', this.returnUrl()!);
+      }
 
-        // Name validation
-        const nameValue = this.name().trim();
-        if (!nameValue) {
-            this.nameError.set('Full name is required');
-            isValid = false;
-        } else if (nameValue.length < 2) {
-            this.nameError.set('Name must be at least 2 characters');
-            isValid = false;
-        } else if (!/^[a-zA-Z\s'-]+$/.test(nameValue)) {
-            this.nameError.set('Name can only contain letters, spaces, hyphens, and apostrophes');
-            isValid = false;
-        }
+      const { error } = await this.supabaseService.signUpWithGoogle();
 
-        // Email validation
-        const emailValue = this.email().trim();
-        if (!emailValue) {
-            this.emailError.set('Email is required');
-            isValid = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-            this.emailError.set('Please enter a valid email address');
-            isValid = false;
-        }
-
-        // Password validation
-        const passwordValue = this.password();
-        if (!passwordValue) {
-            this.passwordError.set('Password is required');
-            isValid = false;
-        } else if (passwordValue.length < 8) {
-            this.passwordError.set('Password must be at least 8 characters');
-            isValid = false;
-        } else if (!/(?=.*[a-z])/.test(passwordValue)) {
-            this.passwordError.set('Password must contain at least one lowercase letter');
-            isValid = false;
-        } else if (!/(?=.*[A-Z])/.test(passwordValue)) {
-            this.passwordError.set('Password must contain at least one uppercase letter');
-            isValid = false;
-        } else if (!/(?=.*\d)/.test(passwordValue)) {
-            this.passwordError.set('Password must contain at least one number');
-            isValid = false;
-        }
-
-        // Confirm password validation
-        const confirmPasswordValue = this.confirmPassword();
-        if (!confirmPasswordValue) {
-            this.confirmPasswordError.set('Please confirm your password');
-            isValid = false;
-        } else if (passwordValue !== confirmPasswordValue) {
-            this.confirmPasswordError.set('Passwords do not match');
-            isValid = false;
-        }
-
-        return isValid;
+      if (error) {
+        this.alertService.error('Failed to sign up with Google. Please try again.', 'Google Sign Up Failed');
+      }
+      // Note: On success, user will be redirected by Supabase OAuth flow
+    } catch (err) {
+      this.alertService.error('An unexpected error occurred. Please try again.', 'Google Sign Up Failed');
+    } finally {
+      this.isLoading.set(false);
     }
+  }
 
-    isFormValid(): boolean {
-        return this.name().trim().length >= 2 &&
-            this.email().includes('@') &&
-            this.password().length >= 8 &&
-            this.password() === this.confirmPassword() &&
-            this.passwordStrength().score >= 2;
+  private handleSignUpError(error: any) {
+    const errorMessage = error.message?.toLowerCase() || '';
+
+    if (errorMessage.includes('user already registered') || errorMessage.includes('email already exists')) {
+      this.emailError.set('An account with this email already exists');
+      this.alertService.warning('An account with this email already exists. Please sign in instead.', 'Account Exists');
+    } else if (errorMessage.includes('password should be at least')) {
+      this.passwordError.set('Password must be at least 6 characters long');
+      this.alertService.error('Password must be at least 6 characters long.', 'Invalid Password');
+    } else if (errorMessage.includes('invalid email')) {
+      this.emailError.set('Please enter a valid email address');
+      this.alertService.error('Please enter a valid email address.', 'Invalid Email');
+    } else if (errorMessage.includes('weak password')) {
+      this.passwordError.set('Password is too weak. Please choose a stronger password');
+      this.alertService.error('Password is too weak. Please include uppercase, lowercase, numbers, and special characters.', 'Weak Password');
+    } else if (errorMessage.includes('rate limit')) {
+      this.alertService.warning('Too many attempts. Please wait a moment before trying again.', 'Rate Limited');
+    } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+      this.alertService.error('Network connection error. Please check your internet connection and try again.', 'Connection Error');
+    } else {
+      this.alertService.error('Unable to create account. Please try again later.', 'Sign Up Failed');
     }
-
-    async signUp() {
-        if (!this.validateForm()) {
-            return;
-        }
-
-        this.isLoading.set(true);
-
-        try {
-            const { error } = await this.supabaseService.signUpWithEmail({
-                name: this.name().trim(),
-                email: this.email().trim(),
-                password: this.password(),
-            });
-
-            if (error) {
-                this.handleSignUpError(error);
-            } else {
-                this.alertService.success(
-                    'Account created successfully! Please check your email to verify your account before signing in.',
-                    'Welcome to DayMatrix'
-                );
-                // Navigate to signin with returnUrl preserved
-                const queryParams = this.returnUrl() ? { returnUrl: this.returnUrl() } : {};
-                this.router.navigate(['/signin'], { queryParams });
-            }
-        } catch (err) {
-            this.alertService.error('An unexpected error occurred. Please try again later.', 'Sign Up Failed');
-        } finally {
-            this.isLoading.set(false);
-        }
-    }
-
-    async signUpWithGoogle() {
-        this.isLoading.set(true);
-
-        try {
-            // Store return URL in session storage for OAuth callback
-            if (this.returnUrl()) {
-                sessionStorage.setItem('returnUrl', this.returnUrl()!);
-            }
-            
-            const { error } = await this.supabaseService.signUpWithGoogle();
-
-            if (error) {
-                this.alertService.error('Failed to sign up with Google. Please try again.', 'Google Sign Up Failed');
-            }
-            // Note: On success, user will be redirected by Supabase OAuth flow
-        } catch (err) {
-            this.alertService.error('An unexpected error occurred. Please try again.', 'Google Sign Up Failed');
-        } finally {
-            this.isLoading.set(false);
-        }
-    }
-
-    private handleSignUpError(error: any) {
-        const errorMessage = error.message?.toLowerCase() || '';
-
-        if (errorMessage.includes('user already registered') || errorMessage.includes('email already exists')) {
-            this.emailError.set('An account with this email already exists');
-            this.alertService.warning('An account with this email already exists. Please sign in instead.', 'Account Exists');
-        } else if (errorMessage.includes('password should be at least')) {
-            this.passwordError.set('Password must be at least 6 characters long');
-            this.alertService.error('Password must be at least 6 characters long.', 'Invalid Password');
-        } else if (errorMessage.includes('invalid email')) {
-            this.emailError.set('Please enter a valid email address');
-            this.alertService.error('Please enter a valid email address.', 'Invalid Email');
-        } else if (errorMessage.includes('weak password')) {
-            this.passwordError.set('Password is too weak. Please choose a stronger password');
-            this.alertService.error('Password is too weak. Please include uppercase, lowercase, numbers, and special characters.', 'Weak Password');
-        } else if (errorMessage.includes('rate limit')) {
-            this.alertService.warning('Too many attempts. Please wait a moment before trying again.', 'Rate Limited');
-        } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
-            this.alertService.error('Network connection error. Please check your internet connection and try again.', 'Connection Error');
-        } else {
-            this.alertService.error('Unable to create account. Please try again later.', 'Sign Up Failed');
-        }
-    }
+  }
 }
