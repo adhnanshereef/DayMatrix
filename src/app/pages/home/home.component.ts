@@ -577,13 +577,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.initializeAnimations();
     this.startCounterAnimations();
     if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      const isSignedIn = await this.supabaseService.isSignedIn();
-      if (isSignedIn) {
-        const user = this.supabaseService.user$.value;
+      this.supabaseService.user$.subscribe(user => {
         if (user) {
           this.router.navigate(['/dashboard']);
         }
-      }
+      });
     }
   }
 
