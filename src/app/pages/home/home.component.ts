@@ -404,10 +404,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly supabaseService = inject(SupabaseService);
   private readonly seoService = inject(SeoService);
-  
+
   protected readonly isMatrixHovered = signal(false);
   protected readonly highlightedQuadrant = signal<string | null>(null);
-  
+
   protected readonly matrixQuadrants = signal<MatrixPrinciple[]>([
     {
       title: 'Crisis & Deadlines',
@@ -419,7 +419,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       title: 'Strategic Planning',
       description: 'Important work that drives long-term success and growth',
-      quadrant: 'not-urgent-important', 
+      quadrant: 'not-urgent-important',
       actionVerb: 'SCHEDULE',
       examples: ['Strategic planning', 'Skill development', 'Relationship building', 'Health and exercise']
     },
@@ -427,7 +427,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'Interruptions',
       description: 'Urgent requests that can often be handled by others',
       quadrant: 'urgent-not-important',
-      actionVerb: 'DELEGATE', 
+      actionVerb: 'DELEGATE',
       examples: ['Non-critical emails', 'Some phone calls', 'Certain meetings', 'Minor requests']
     },
     {
@@ -447,14 +447,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       actionVerb: 'DO FIRST',
       examples: [
         'Medical emergencies requiring immediate attention',
-        'Critical system outages affecting operations', 
+        'Critical system outages affecting operations',
         'Project deadlines due today with major consequences',
         'Crisis communication and damage control',
         'Emergency client issues threatening relationships'
       ]
     },
     {
-      title: 'Important but Not Urgent: Strategic Excellence', 
+      title: 'Important but Not Urgent: Strategic Excellence',
       description: 'This is where high performers spend most of their time. These activities prevent crises, build capabilities, and create long-term success. Investing here reduces Quadrant 1 emergencies.',
       quadrant: 'not-urgent-important',
       actionVerb: 'SCHEDULE',
@@ -469,7 +469,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     {
       title: 'Urgent but Not Important: The Delegation Zone',
       description: 'These tasks feel urgent but don\'t contribute significantly to your goals. They often benefit others more than you. Delegate when possible, or handle quickly to minimize disruption.',
-      quadrant: 'urgent-not-important', 
+      quadrant: 'urgent-not-important',
       actionVerb: 'DELEGATE',
       examples: [
         'Non-critical emails requiring quick responses',
@@ -483,7 +483,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'Neither Urgent nor Important: The Elimination Zone',
       description: 'These activities provide minimal value and distract from meaningful work. Be ruthless in eliminating them. They\'re often habits disguised as necessities.',
       quadrant: 'not-urgent-not-important',
-      actionVerb: 'ELIMINATE', 
+      actionVerb: 'ELIMINATE',
       examples: [
         'Excessive social media scrolling',
         'Watching random YouTube videos',
@@ -577,9 +577,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.initializeAnimations();
     this.startCounterAnimations();
     if (typeof window !== 'undefined' && window.location.pathname === '/') {
-      const user = await this.supabaseService.isSignedIn();
-      if (user) {
-      this.router.navigate(['/dashboard']);
+      const isSignedIn = await this.supabaseService.isSignedIn();
+      if (!isSignedIn) {
+        const user = this.supabaseService.user$.value;
+        if (!user) {
+          this.router.navigate(['/dashboard']);
+        }
       }
     }
   }
@@ -601,7 +604,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   protected getQuadrantNumber(quadrant: string): string {
     const numbers: { [key: string]: string } = {
       'urgent-important': '01',
-      'not-urgent-important': '02', 
+      'not-urgent-important': '02',
       'urgent-not-important': '03',
       'not-urgent-not-important': '04'
     };
