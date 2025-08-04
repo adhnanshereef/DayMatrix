@@ -282,7 +282,7 @@ export class SigninComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // Get returnUrl from query params
     this.returnUrl.set(this.route.snapshot.queryParams['returnUrl'] || null);
-    
+
     // Update SEO for sign in page
     this.seoService.updateCustomSEO({
       title: 'Sign In - DayMatrix | Access Your Productivity Dashboard',
@@ -293,11 +293,14 @@ export class SigninComponent implements OnInit, OnDestroy {
     });
 
     if (typeof window !== 'undefined') {
-      const user = await this.supabaseService.isSignedIn();
-      if (user) {
-        this.navigateAfterAuth();
+      const isSignedIn = await this.supabaseService.isSignedIn();
+      if (isSignedIn) {
+        const user = this.supabaseService.user$.value;
+        if (user) {
+          this.navigateAfterAuth();
+        }
       }
-      
+
       // Start testimonial rotation
       this.startTestimonialRotation();
     }
@@ -326,7 +329,7 @@ export class SigninComponent implements OnInit, OnDestroy {
 
   private validateForm(): boolean {
     let isValid = true;
-    
+
     // Reset errors
     this.emailError.set('');
     this.passwordError.set('');
@@ -360,13 +363,13 @@ export class SigninComponent implements OnInit, OnDestroy {
     }
 
     this.isLoading.set(true);
-    
+
     try {
       const { error } = await this.supabaseService.signInWithEmail({
         email: this.email().trim(),
         password: this.password(),
       });
-      
+
       if (error) {
         this.handleSignInError(error);
       } else {
@@ -382,15 +385,15 @@ export class SigninComponent implements OnInit, OnDestroy {
 
   async signInWithGoogle() {
     this.isLoading.set(true);
-    
+
     try {
       // Store return URL in session storage for OAuth callback
       if (this.returnUrl()) {
         sessionStorage.setItem('returnUrl', this.returnUrl()!);
       }
-      
+
       const { error } = await this.supabaseService.signInWithGoogle();
-      
+
       if (error) {
         this.alertService.error('Failed to sign in with Google. Please try again.', 'Google Sign In Failed');
       }
@@ -404,7 +407,7 @@ export class SigninComponent implements OnInit, OnDestroy {
 
   private handleSignInError(error: any) {
     const errorMessage = error.message?.toLowerCase() || '';
-    
+
     if (errorMessage.includes('invalid login credentials') || errorMessage.includes('invalid email or password')) {
       this.emailError.set('Invalid email or password');
       this.passwordError.set('Invalid email or password');
