@@ -293,13 +293,11 @@ export class SigninComponent implements OnInit, OnDestroy {
     });
 
     if (typeof window !== 'undefined') {
-      const isSignedIn = await this.supabaseService.isSignedIn();
-      if (isSignedIn) {
-        const user = this.supabaseService.user$.value;
+      this.supabaseService.user$.subscribe(user => {
         if (user) {
           this.navigateAfterAuth();
         }
-      }
+      });
 
       // Start testimonial rotation
       this.startTestimonialRotation();
