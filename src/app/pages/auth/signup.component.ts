@@ -553,7 +553,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.handleSignUpError(error);
       } else {
         this.alertService.success(
-          'Account created successfully! Please check your email to verify your account before signing in.',
+          'Account created successfully! Please check your email to verify your account before signing in. Check your spam folder if you don’t see the email.',
           'Welcome to DayMatrix'
         );
         // Navigate to signin with returnUrl preserved
