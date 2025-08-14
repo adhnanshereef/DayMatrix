@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, computed, signal } from '@angular/core';
+import { Component, inject, OnInit, computed, signal, HostListener } from '@angular/core';
 import { SupabaseService } from '../../services/supabase';
 import { SeoService } from '../../services/seo.service';
 import { QuadrantKey, Task, TaskInput } from '../../interfaces/tasks';
@@ -53,11 +53,25 @@ import { AlertService } from '../../services/alert.service';
                 <span>Do First</span>
                 <div class="task-count">{{ getTaskCount('important-urgent') }}</div>
               </div>
-              <button class="add-task-btn" (click)="openTaskModal('important-urgent')" type="button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14m-7-7h14"/>
-                </svg>
-              </button>
+              <div class="quadrant-actions">
+                <button 
+                  class="info-btn" 
+                  (click)="toggleQuadrantInfo('important-urgent')"
+                  type="button"
+                  [class.active]="activeQuadrantInfo() === 'important-urgent'"
+                  aria-label="Information about Do First quadrant">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+                <button class="add-task-btn" (click)="openTaskModal('important-urgent')" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m-7-7h14"/>
+                  </svg>
+                </button>
+              </div>
             </div>
             
             <div class="task-list" [class.empty]="getTasksByQuadrant('important-urgent').length === 0">
@@ -133,11 +147,25 @@ import { AlertService } from '../../services/alert.service';
                 <span>Schedule</span>
                 <div class="task-count">{{ getTaskCount('important-not-urgent') }}</div>
               </div>
-              <button class="add-task-btn" (click)="openTaskModal('important-not-urgent')" type="button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14m-7-7h14"/>
-                </svg>
-              </button>
+              <div class="quadrant-actions">
+                <button 
+                  class="info-btn" 
+                  (click)="toggleQuadrantInfo('important-not-urgent')"
+                  type="button"
+                  [class.active]="activeQuadrantInfo() === 'important-not-urgent'"
+                  aria-label="Information about Schedule quadrant">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+                <button class="add-task-btn" (click)="openTaskModal('important-not-urgent')" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m-7-7h14"/>
+                  </svg>
+                </button>
+              </div>
             </div>
             
             <div class="task-list" [class.empty]="getTasksByQuadrant('important-not-urgent').length === 0">
@@ -215,11 +243,25 @@ import { AlertService } from '../../services/alert.service';
                 <span>Delegate</span>
                 <div class="task-count">{{ getTaskCount('not-important-urgent') }}</div>
               </div>
-              <button class="add-task-btn" (click)="openTaskModal('not-important-urgent')" type="button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14m-7-7h14"/>
-                </svg>
-              </button>
+              <div class="quadrant-actions">
+                <button 
+                  class="info-btn" 
+                  (click)="toggleQuadrantInfo('not-important-urgent')"
+                  type="button"
+                  [class.active]="activeQuadrantInfo() === 'not-important-urgent'"
+                  aria-label="Information about Delegate quadrant">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+                <button class="add-task-btn" (click)="openTaskModal('not-important-urgent')" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m-7-7h14"/>
+                  </svg>
+                </button>
+              </div>
             </div>
             
             <div class="task-list" [class.empty]="getTasksByQuadrant('not-important-urgent').length === 0">
@@ -298,11 +340,25 @@ import { AlertService } from '../../services/alert.service';
                 <span>Eliminate</span>
                 <div class="task-count">{{ getTaskCount('not-important-not-urgent') }}</div>
               </div>
-              <button class="add-task-btn" (click)="openTaskModal('not-important-not-urgent')" type="button">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 5v14m-7-7h14"/>
-                </svg>
-              </button>
+              <div class="quadrant-actions">
+                <button 
+                  class="info-btn" 
+                  (click)="toggleQuadrantInfo('not-important-not-urgent')"
+                  type="button"
+                  [class.active]="activeQuadrantInfo() === 'not-important-not-urgent'"
+                  aria-label="Information about Eliminate quadrant">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 16v-4"/>
+                    <path d="M12 8h.01"/>
+                  </svg>
+                </button>
+                <button class="add-task-btn" (click)="openTaskModal('not-important-not-urgent')" type="button">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14m-7-7h14"/>
+                  </svg>
+                </button>
+              </div>
             </div>
             
             <div class="task-list" [class.empty]="getTasksByQuadrant('not-important-not-urgent').length === 0">
@@ -442,6 +498,40 @@ import { AlertService } from '../../services/alert.service';
         }
       </div>
     </div>
+
+    <!-- Quadrant Information Display -->
+    @if (activeQuadrantInfo()) {
+      <div class="quadrant-info-overlay" (click)="hideQuadrantInfo()">
+        <div class="quadrant-info-content" (click)="$event.stopPropagation()">
+          <div class="quadrant-info-header">
+            <h3>{{ getQuadrantInfo(activeQuadrantInfo()!).title }}</h3>
+            <button class="info-close" (click)="hideQuadrantInfo()" type="button">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+          <div class="quadrant-info-body">
+            <p class="info-description">{{ getQuadrantInfo(activeQuadrantInfo()!).description }}</p>
+            
+            <div class="info-section">
+              <h4>Examples:</h4>
+              <ul class="info-examples">
+                @for (example of getQuadrantInfo(activeQuadrantInfo()!).examples; track example) {
+                  <li>{{ example }}</li>
+                }
+              </ul>
+            </div>
+            
+            <div class="info-section">
+              <h4>Tips:</h4>
+              <p class="info-tips">{{ getQuadrantInfo(activeQuadrantInfo()!).tips }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
 
     <!-- Task Creation Modal -->
     @if (isTaskModalOpen()) {
@@ -699,12 +789,14 @@ export class TasksComponent implements OnInit {
   private readonly _selectedTask = signal<Task | null>(null);
   private readonly _editModalOpen = signal(false);
   private readonly _completedExpanded = signal(false);
+  private readonly _activeQuadrantInfo = signal<string | null>(null);
 
   // Public signals for template binding
   readonly isTaskModalOpen = this._taskModalOpen.asReadonly();
   readonly selectedTask = this._selectedTask.asReadonly();
   readonly isEditModalOpen = this._editModalOpen.asReadonly();
   readonly isCompletedExpanded = this._completedExpanded.asReadonly();
+  readonly activeQuadrantInfo = this._activeQuadrantInfo.asReadonly();
 
   // Services and data
   private readonly supabaseService = inject(SupabaseService);
@@ -718,6 +810,58 @@ export class TasksComponent implements OnInit {
     description: '',
     due: null,
     quadrant: 'important-urgent'
+  };
+
+  // Quadrant information data
+  readonly quadrantInfo = {
+    'important-urgent': {
+      title: 'Do First (Crisis Mode)',
+      description: 'Critical tasks that require immediate attention and have serious consequences if delayed.',
+      examples: [
+        'Emergency medical appointments',
+        'Critical system failures or outages',
+        'Tax deadlines on the due date',
+        'Client emergencies requiring immediate response',
+        'Safety issues that need immediate resolution'
+      ],
+      tips: 'Minimize tasks in this quadrant by better planning and prevention. Focus on completion rather than perfection.'
+    },
+    'important-not-urgent': {
+      title: 'Schedule (Strategic Zone)',
+      description: 'Important tasks that can be planned and scheduled for optimal execution. This is where you should spend most of your time.',
+      examples: [
+        'Learning new skills for career growth',
+        'Exercise and health maintenance',
+        'Strategic planning and goal setting',
+        'Building relationships and networking',
+        'Preventive maintenance and preparation'
+      ],
+      tips: 'Invest most of your time here. These activities prevent future crises and drive long-term success.'
+    },
+    'not-important-urgent': {
+      title: 'Delegate (Distraction Zone)',
+      description: 'Tasks that seem urgent but don\'t significantly contribute to your goals. Consider delegating or minimizing these.',
+      examples: [
+        'Non-critical interruptions from colleagues',
+        'Some phone calls and emails',
+        'Certain meetings that could be handled by others',
+        'Social media notifications',
+        'Minor administrative tasks'
+      ],
+      tips: 'Learn to say no, delegate when possible, or batch these tasks into specific time blocks.'
+    },
+    'not-important-not-urgent': {
+      title: 'Eliminate (Time Wasters)',
+      description: 'Activities that provide little value and should be minimized or eliminated entirely.',
+      examples: [
+        'Excessive social media browsing',
+        'Mindless TV watching',
+        'Gossiping or idle chatter',
+        'Unnecessary busy work',
+        'Perfectionism on low-value tasks'
+      ],
+      tips: 'Eliminate these activities or use them as rewards after completing important tasks. Be honest about time wasters.'
+    }
   };
 
   // Edit task form data
@@ -817,6 +961,30 @@ export class TasksComponent implements OnInit {
 
   toggleCompletedSection(): void {
     this._completedExpanded.set(!this._completedExpanded());
+  }
+
+  // Quadrant information management
+  toggleQuadrantInfo(quadrant: string): void {
+    if (this._activeQuadrantInfo() === quadrant) {
+      this._activeQuadrantInfo.set(null);
+    } else {
+      this._activeQuadrantInfo.set(quadrant);
+    }
+  }
+
+  hideQuadrantInfo(): void {
+    this._activeQuadrantInfo.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKeydown(): void {
+    if (this.activeQuadrantInfo()) {
+      this.hideQuadrantInfo();
+    }
+  }
+
+  getQuadrantInfo(quadrant: string) {
+    return this.quadrantInfo[quadrant as keyof typeof this.quadrantInfo];
   }
 
   // Task operations
