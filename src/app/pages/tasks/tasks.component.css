@@ -750,19 +750,19 @@
 
 /* Due date color states */
 .task-due.due-overdue {
-  color: #dc3545;
+  color: var(--accent-color);
 }
 
 .task-due.due-overdue svg {
-  color: #dc3545;
+  color: var(--accent-color);
 }
 
 .task-due.due-today {
-  color: #00d4ff;
+  color: var(--secondary-color);
 }
 
 .task-due.due-today svg {
-  color: #00d4ff;
+  color: var(--secondary-color);
 }
 
 .task-due.due-upcoming {
@@ -1299,19 +1299,19 @@
 
 /* Due date color states for detail modal */
 .due-date-display.due-overdue {
-  color: #dc3545;
+  color: var(--accent-color);
 }
 
 .due-date-display.due-overdue svg {
-  color: #dc3545;
+  color: var(--accent-color);
 }
 
 .due-date-display.due-today {
-  color: #00d4ff;
+  color: var(--secondary-color);
 }
 
 .due-date-display.due-today svg {
-  color: #00d4ff;
+  color: var(--secondary-color);
 }
 
 .due-date-display.due-upcoming {
