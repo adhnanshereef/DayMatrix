@@ -748,6 +748,36 @@
   margin-top: 0.5rem;
 }
 
+/* Due date color states */
+.task-due.due-overdue {
+  color: #dc3545;
+}
+
+.task-due.due-overdue svg {
+  color: #dc3545;
+}
+
+.task-due.due-today {
+  color: #00d4ff;
+}
+
+.task-due.due-today svg {
+  color: #00d4ff;
+}
+
+.task-due.due-upcoming {
+  color: var(--text-secondary);
+}
+
+/* Completed tasks always show green */
+.task-due.due-completed {
+  color: #28a745;
+}
+
+.task-due.due-completed svg {
+  color: #28a745;
+}
+
 /* Task Actions */
 .task-actions {
   display: flex;
@@ -1265,6 +1295,36 @@
   gap: 0.5rem;
   color: var(--text-secondary);
   font-size: 1rem;
+}
+
+/* Due date color states for detail modal */
+.due-date-display.due-overdue {
+  color: #dc3545;
+}
+
+.due-date-display.due-overdue svg {
+  color: #dc3545;
+}
+
+.due-date-display.due-today {
+  color: #00d4ff;
+}
+
+.due-date-display.due-today svg {
+  color: #00d4ff;
+}
+
+.due-date-display.due-upcoming {
+  color: var(--text-secondary);
+}
+
+/* Completed tasks in detail modal show green */
+.due-date-display.due-completed {
+  color: #28a745;
+}
+
+.due-date-display.due-completed svg {
+  color: #28a745;
 }
 
 .task-detail-meta {
