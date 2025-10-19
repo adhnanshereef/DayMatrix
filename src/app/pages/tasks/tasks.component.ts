@@ -3,12 +3,12 @@ import { SupabaseService } from '../../services/supabase';
 import { SeoService } from '../../services/seo.service';
 import { QuadrantKey, Task, TaskInput } from '../../interfaces/tasks';
 import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-tasks',
-  imports: [FormsModule, DatePipe],
+  imports: [FormsModule, DatePipe, NgClass],
   template: `
     <!-- Background Gradient Shapes -->
     <div class="background-gradient-shapes">
@@ -101,7 +101,7 @@ import { AlertService } from '../../services/alert.service';
                       <div class="task-content">
                         <h3 class="task-title" [class.completed]="task.completed">{{ task.task }}</h3>
                         @if (task.due) {
-                          <div class="task-due">
+                          <div class="task-due" [ngClass]="getDueDateClass(task.due)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                               <line x1="16" y1="2" x2="16" y2="6"/>
@@ -196,7 +196,7 @@ import { AlertService } from '../../services/alert.service';
                       <div class="task-content">
                         <h3 class="task-title" [class.completed]="task.completed">{{ task.task }}</h3>
                         @if (task.due) {
-                          <div class="task-due">
+                          <div class="task-due" [ngClass]="getDueDateClass(task.due)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                               <line x1="16" y1="2" x2="16" y2="6"/>
@@ -293,7 +293,7 @@ import { AlertService } from '../../services/alert.service';
                       <div class="task-content">
                         <h3 class="task-title" [class.completed]="task.completed">{{ task.task }}</h3>
                         @if (task.due) {
-                          <div class="task-due">
+                          <div class="task-due" [ngClass]="getDueDateClass(task.due)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                               <line x1="16" y1="2" x2="16" y2="6"/>
@@ -388,7 +388,7 @@ import { AlertService } from '../../services/alert.service';
                       <div class="task-content">
                         <h3 class="task-title" [class.completed]="task.completed">{{ task.task }}</h3>
                         @if (task.due) {
-                          <div class="task-due">
+                          <div class="task-due" [ngClass]="getDueDateClass(task.due)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                               <line x1="16" y1="2" x2="16" y2="6"/>
@@ -461,7 +461,7 @@ import { AlertService } from '../../services/alert.service';
                     <div class="task-content">
                       <h3 class="task-title completed">{{ task.task }}</h3>
                       @if (task.due) {
-                        <div class="task-due">
+                        <div class="task-due" [ngClass]="getDueDateClassForTask(task)">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                             <line x1="16" y1="2" x2="16" y2="6"/>
@@ -680,14 +680,14 @@ import { AlertService } from '../../services/alert.service';
               @if (selectedTask()!.description) {
                 <div class="task-detail-description">
                   <h4>Description</h4>
-                  <p>{{ selectedTask()!.description }}</p>
+                  <pre>{{ selectedTask()!.description }}</pre>
                 </div>
               }
               
               @if (selectedTask()!.due) {
                 <div class="task-detail-due">
                   <h4>Due Date</h4>
-                  <div class="due-date-display">
+                  <div class="due-date-display" [ngClass]="getDueDateClassForTask(selectedTask()!)">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                       <line x1="16" y1="2" x2="16" y2="6"/>
@@ -1094,6 +1094,39 @@ export class TasksComponent implements OnInit {
       created_at: '',
       updated_at: ''
     };
+  }
+
+  // Due date utility methods
+  isDueToday(dueDate: string | null): boolean {
+    if (!dueDate) return false;
+    const today = new Date();
+    const due = new Date(dueDate);
+    return (
+      today.getFullYear() === due.getFullYear() &&
+      today.getMonth() === due.getMonth() &&
+      today.getDate() === due.getDate()
+    );
+  }
+
+  isDueOverdue(dueDate: string | null): boolean {
+    if (!dueDate) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate);
+    due.setHours(0, 0, 0, 0);
+    return due < today;
+  }
+
+  getDueDateClass(dueDate: string | null): string {
+    if (!dueDate) return '';
+    if (this.isDueOverdue(dueDate)) return 'due-overdue';
+    if (this.isDueToday(dueDate)) return 'due-today';
+    return 'due-upcoming';
+  }
+
+  getDueDateClassForTask(task: Task): string {
+    if (task.completed) return 'due-completed';
+    return this.getDueDateClass(task.due);
   }
 
   // Legacy methods for backward compatibility (preserved Supabase operations)
