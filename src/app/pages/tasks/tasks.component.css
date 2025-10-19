@@ -1210,6 +1210,32 @@
   box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.4);
 }
 
+/* Remove Due Date Button */
+.btn-remove-due {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.btn-remove-due svg {
+  flex-shrink: 0;
+}
+
+/* Mobile adjustments for remove due date button */
+@media (max-width: 480px) {
+  .btn-remove-due {
+    font-size: 0.8rem;
+    padding: 0.55rem 0.7rem;
+    gap: 0.4rem;
+  }
+  
+  .btn-remove-due svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
 /* Task Detail Styles */
 .task-detail-content {
   display: flex;
