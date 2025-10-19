@@ -715,7 +715,19 @@ import { AlertService } from '../../services/alert.service';
           </div>
           
           <div class="modal-footer">
-            <button class="btn-secondary" (click)="closeTaskDetail()" type="button">Close</button>
+            
+            @if (selectedTask()!.due) {
+              <button class="btn-secondary btn-remove-due" (click)="removeDueDate(selectedTask()!)" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                  <line x1="8" y1="14" x2="16" y2="14"/>
+                </svg>
+                Remove Due
+              </button>
+            }
             <button class="btn-secondary" (click)="editTask(selectedTask()!)" type="button">Edit</button>
             <button class="btn-danger" (click)="deleteTask(selectedTask()!.id)" type="button">Delete</button>
           </div>
@@ -1020,6 +1032,10 @@ export class TasksComponent implements OnInit {
       return;
     }
 
+    if (!this.editingTask.due) {
+      this.editingTask.due = null;
+    }
+
     try {
       const { error } = await this.supabaseService.updateTask(this.editingTask);
       if (error) {
@@ -1057,10 +1073,36 @@ export class TasksComponent implements OnInit {
       } else {
         await this.supabaseService.completeTask(task.id);
       }
+      
+      // Close the modal
+      this.closeTaskDetail();
+
     } catch (error) {
       console.error('Error toggling task completion:', error);
       this.alertService.error('Unable to update task status. Please try again.', 'Update Failed');
     }
+  }
+
+  async removeDueDate(task: Task): Promise<void> {
+    this.alertService.confirmationAlert(
+      'This will remove the due date from this task. Continue?',
+      async () => {
+        try {
+          const updatedTask = { ...task, due: null };
+          const { error } = await this.supabaseService.updateTask(updatedTask);
+          if (error) {
+            console.error('Error removing due date:', error);
+            this.alertService.error('Unable to remove due date. Please try again.', 'Update Failed');
+          } else {
+            this.alertService.success('Due date removed successfully', 'Due Date Removed');
+            this.closeTaskDetail();
+          }
+        } catch (error) {
+          console.error('Error removing due date:', error);
+          this.alertService.error('Unable to remove due date. Please try again.', 'Update Failed');
+        }
+      }
+    );
   }
 
   // Utility methods
