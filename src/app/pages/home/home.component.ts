@@ -68,15 +68,15 @@ interface MatrixPrinciple {
             
             <div class="hero-stats">
               <div class="stat-item">
-                <div class="stat-number" [attr.data-target]="12847">0</div>
+                <div class="stat-number" [attr.data-target]="1">0</div>
                 <div class="stat-label">Active Users</div>
               </div>
               <div class="stat-item">
-                <div class="stat-number" [attr.data-target]="89">0%</div>
+                <div class="stat-number" [attr.data-target]="11">0%</div>
                 <div class="stat-label">Productivity Increase</div>
               </div>
               <div class="stat-item">
-                <div class="stat-number" [attr.data-target]="156">0</div>
+                <div class="stat-number" [attr.data-target]="0">0</div>
                 <div class="stat-label">Minutes Saved Daily</div>
               </div>
             </div>
