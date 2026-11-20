@@ -374,7 +374,7 @@ export class SettingsComponent implements OnInit {
     confirmDeleteAccount(): void {
         if (this.deleteConfirmationText === 'DELETE') {
             // Here you would implement actual account deletion
-            this.alertService.success('Currently Cannot Delete Account. This feature will be implemented soon. If you want send email to "contact.day@adhnan.tech"', 'Account Deletion');
+            this.alertService.success('Currently Cannot Delete Account. This feature will be implemented soon. If you want send email to "contact@adhnan.me"', 'Account Deletion');
             this.showDeleteConfirmation = false;
             this.deleteConfirmationText = '';
         }
