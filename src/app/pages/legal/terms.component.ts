@@ -188,8 +188,8 @@ interface Section {
                   </svg>
                   <span class="contact-item-label">Email Support</span>
                 </div>
-                <a href="mailto:day.contact&#64;adhnan.tech" class="contact-item-value">
-                  day.contact&#64;adhnan.tech
+                <a href="mailto:contact&#64;adhnan.me" class="contact-item-value">
+                  contact&#64;adhnan.me
                 </a>
               </div>
               
@@ -212,7 +212,7 @@ interface Section {
                   </svg>
                   <span class="contact-item-label">Website</span>
                 </div>
-                <a href="https://www.adhnan.tech" target="_blank" rel="noopener noreferrer" class="contact-item-value">
+                <a href="https://www.adhnan.me" target="_blank" rel="noopener noreferrer" class="contact-item-value">
                   www.adhnan.tech
                 </a>
               </div>
